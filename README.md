@@ -355,9 +355,40 @@ Aplikasi ini memiliki beberapa fitur utama, yaitu:
 
 *   **Autentikasi:** Pengguna dapat melakukan registrasi dan login untuk mengakses fitur-fitur aplikasi.
 *   **Manajemen Data Siswa:** Pengguna dapat melihat daftar siswa, melihat detail siswa, menambah siswa baru, mengubah data siswa, dan menghapus siswa.
-*   **Tambah Favorite:** Memungkinkan pengguna untuk menyimpan data siswa ke daftar Favorite.
-*   **Lihat Favorite:** Menampilkan daftar siswa Favorite yang telah disimpan.
-*   **Hapus Favorite:** Memungkinkan pengguna untuk menghapus data siswa dari daftar Favorite.
+*   **Fitur Favorite:**
+    *   **Tambah Favorite:** Memungkinkan pengguna untuk menyimpan data siswa ke daftar Favorite.
+        *   **Alur Tampilan:**
+            1.  Pengguna melihat daftar siswa di layar utama.
+            2.  Di setiap item siswa, terdapat ikon hati (atau ikon lain yang sesuai).
+            3.  Pengguna dapat menekan ikon hati tersebut untuk menandai siswa sebagai favorit.
+            4.  Ikon hati akan berubah (misalnya, menjadi berwarna atau terisi) untuk menunjukkan bahwa siswa tersebut telah ditambahkan ke favorit.
+        *   **Alur Teknis:**
+            1.  Ketika pengguna menekan ikon hati, aplikasi akan memanggil fungsi `onFavoriteChanged` di `StudentListItem`.
+            2.  Fungsi ini akan menerima parameter `newIsFavorite` yang menunjukkan status favorit yang baru (true atau false).
+            3.  Aplikasi akan memanggil `studentRepository.updateFavoriteStatus(student.id, newIsFavorite)` untuk memperbarui status favorit di database lokal (Room).
+            4.  Aplikasi akan memperbarui daftar `favoriteStudents` dengan data terbaru dari database.
+            5.  UI akan diperbarui untuk mencerminkan perubahan status favorit.
+    *   **Lihat Favorite:** Menampilkan daftar siswa Favorite yang telah disimpan.
+        *   **Alur Tampilan:**
+            1.  Pengguna dapat mengakses layar "Favorite" melalui menu navigasi (misalnya, bottom navigation).
+            2.  Layar "Favorite" akan menampilkan daftar siswa yang telah ditandai sebagai favorit.
+            3.  Setiap item siswa akan menampilkan informasi siswa dan ikon hati yang sudah terisi.
+        *   **Alur Teknis:**
+            1.  Ketika pengguna membuka layar "Favorite", aplikasi akan mengambil data siswa favorit dari database lokal (Room) menggunakan `studentDao.getAllStudents()`.
+            2.  Aplikasi akan memfilter data siswa dari API yang memiliki `isFavorite` true.
+            3.  Data siswa favorit tersebut akan ditampilkan di layar "Favorite".
+    *   **Hapus Favorite:** Memungkinkan pengguna untuk menghapus data siswa dari daftar Favorite.
+        *   **Alur Tampilan:**
+            1.  Pengguna melihat daftar siswa di layar "Favorite".
+            2.  Di setiap item siswa, terdapat ikon hati yang sudah terisi.
+            3.  Pengguna dapat menekan ikon hati tersebut untuk menghapus siswa dari favorit.
+            4.  Ikon hati akan berubah (misalnya, menjadi tidak berwarna atau kosong) untuk menunjukkan bahwa siswa tersebut telah dihapus dari favorit.
+        *   **Alur Teknis:**
+            1.  Ketika pengguna menekan ikon hati, aplikasi akan memanggil fungsi `onFavoriteChanged` di `StudentListItem`.
+            2.  Fungsi ini akan menerima parameter `newIsFavorite` yang menunjukkan status favorit yang baru (false).
+            3.  Aplikasi akan memanggil `studentRepository.updateFavoriteStatus(student.id, newIsFavorite)` untuk memperbarui status favorit di database lokal (Room).
+            4.  Aplikasi akan memperbarui daftar `favoriteStudents` dengan data terbaru dari database.
+            5.  UI akan diperbarui untuk mencerminkan perubahan status favorit.
 
 ## 7. Tampilan Aplikasi
 
