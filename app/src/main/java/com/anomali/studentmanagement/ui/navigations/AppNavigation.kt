@@ -10,8 +10,8 @@ import androidx.navigation.navArgument
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPreferences
-import com.anomali.studentmanagement.data.data_resource.remote.network.RetrofitInstance
 import com.anomali.studentmanagement.data.repository.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.StudentRepositoryImpl
 import com.anomali.studentmanagement.ui.screens.DashboardScreen
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
@@ -25,9 +25,8 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val token = getTokenFromPreferences(context)
-    val authRepository = AuthRepositoryImpl(
-        context = context
-    )
+    val authRepository = AuthRepositoryImpl(context = context)
+    val studentRepository = StudentRepositoryImpl(context = context)
 
     NavHost(
         navController,
@@ -35,13 +34,19 @@ fun AppNavigation() {
     ) {
         composable(AppRoutes.LoginScreen.route) {
             LoginScreen(
-                onLoginSuccess = { navController.navigate(AppRoutes.DashboardScreen.route) {
-                    popUpTo(AppRoutes.LoginScreen.route) { inclusive = true }
-                } }
+                onLoginSuccess = {
+                    navController.navigate(AppRoutes.DashboardScreen.route) {
+                        popUpTo(AppRoutes.LoginScreen.route) { inclusive = true }
+                    }
+                },
+                navController = navController
             )
         }
         composable(AppRoutes.RegisterScreen.route) {
-            RegisterScreen()
+            RegisterScreen(
+                navController = navController,
+                authRepository = AuthRepositoryImpl(context)
+            )
         }
         composable(AppRoutes.LogoutScreen.route) {
             PreferencesUtils.clearTokenFromPreferences(context)
@@ -58,7 +63,10 @@ fun AppNavigation() {
         }
 
         composable(AppRoutes.StudentListScreen.route) {
-            StudentListScreen(navController)
+            StudentListScreen(
+                navController = navController,
+                studentRepository = studentRepository
+            )
         }
         composable(AppRoutes.ProfileScreen.route) {
             ProfileScreen(

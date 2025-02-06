@@ -1,10 +1,6 @@
-package com.anomali.studentmanagement.data.data_resource.remote.dto.response
+package com.anomali.studentmanagement.data.remote.dto.response
 
 import com.google.gson.annotations.SerializedName
-
-data class UserResponse(
-    @SerializedName("user") val user: UserDTO
-)
 
 data class UserDTO(
     @SerializedName("id") val id: Int,

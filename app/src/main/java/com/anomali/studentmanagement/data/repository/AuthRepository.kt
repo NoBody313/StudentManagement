@@ -2,41 +2,59 @@ package com.anomali.studentmanagement.data.repository
 
 import android.content.Context
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
-import com.anomali.studentmanagement.data.data_resource.remote.dto.request.LoginRequest
-import com.anomali.studentmanagement.data.data_resource.remote.dto.request.RegisterRequest
-import com.anomali.studentmanagement.data.data_resource.remote.dto.response.LoginResponse
-import com.anomali.studentmanagement.data.data_resource.remote.network.ApiService
-import com.anomali.studentmanagement.data.data_resource.remote.network.RetrofitInstance
 import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.User
+import com.anomali.studentmanagement.data.remote.dto.request.LoginRequest
+import com.anomali.studentmanagement.data.remote.dto.request.RegisterRequest
+import com.anomali.studentmanagement.data.remote.dto.response.LoginResponseDTO
+import com.anomali.studentmanagement.data.remote.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 interface AuthRepository {
-    suspend fun login(email: String, password: String): LoginResponse
+    suspend fun login(email: String, password: String): LoginResponseDTO
     suspend fun getUserData(token: String): User?
     suspend fun logout(token: String)
-    suspend fun register(name: String, email: String, password: String)
+    suspend fun register(name: String, email: String, password: String, confirmPassword: String)
 }
 
 class AuthRepositoryImpl(
     private val context: Context
 ) : AuthRepository {
-    private val apiService: ApiService by lazy {
-        RetrofitInstance.getRetrofitInstance(context)
+    init {
+        RetrofitInstance.initRetrofit(context)
     }
+    private val authService = RetrofitInstance.getAuthService()
 
-    override suspend fun register(name: String, email: String, password: String) {
-        withContext(Dispatchers.IO) {
-            apiService.register(RegisterRequest(name, email, password))
+    override suspend fun register(
+        name: String,
+        email: String,
+        password: String,
+        confirmPassword: String
+    ) {
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = RegisterRequest(name, email, password, confirmPassword)
+                val response = authService.register(request)
+                if (response.isSuccessful) {
+                    val registerResponse = response.body()?.token
+                    registerResponse?.let {
+                        PreferencesUtils.saveTokenToPreferences(context, it)
+                    }
+                } else {
+                    throw Exception("Registration failed: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+            }
         }
     }
 
-    override suspend fun login(email: String, password: String): LoginResponse {
+    override suspend fun login(email: String, password: String): LoginResponseDTO {
         return withContext(Dispatchers.IO) {
-            val response = apiService.login(LoginRequest(email, password))
+            val response = authService.login(LoginRequest(email, password))
             if (response.isSuccessful) {
-                response.body()?.toModel()?.let { loginResponse ->
+                response.body()?.let { loginResponse ->
                     PreferencesUtils.saveTokenToPreferences(context, loginResponse.token)
                     return@let loginResponse
                 } ?: throw Exception("Empty response body")
@@ -49,7 +67,7 @@ class AuthRepositoryImpl(
     override suspend fun getUserData(token: String): User? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.getUser("Bearer $token")
+                val response = authService.getUser("Bearer $token")
                 if (response.isSuccessful) {
                     response.body()?.let { userDTO ->
                         val user = userDTO.toModel()
@@ -70,7 +88,7 @@ class AuthRepositoryImpl(
     override suspend fun logout(token: String) {
         withContext(Dispatchers.IO) {
             try {
-                val response = apiService.logout("Bearer $token")
+                val response = authService.logout("Bearer $token")
                 if (response.isSuccessful) {
                     PreferencesUtils.clearTokenFromPreferences(context)
                     println("Logout berhasil. Token telah dihapus.")
@@ -84,4 +102,6 @@ class AuthRepositoryImpl(
             }
         }
     }
+
+    class UnauthorizedException : Exception("Token expired or unauthorized access")
 }
