@@ -1,20 +1,20 @@
 package com.anomali.studentmanagement.core.routes
 
 sealed class AppRoutes(val route: String) {
-
     object LoginScreen : AppRoutes("login")
     object RegisterScreen : AppRoutes("register")
     object LogoutScreen : AppRoutes("logout")
-
     object DashboardScreen : AppRoutes("dashboard")
-    object ProfileScreen : AppRoutes("profile")
     object StudentListScreen : AppRoutes("students")
+    object ProfileScreen : AppRoutes("profile")
+    object StudentDetailScreen : AppRoutes("student/{studentId}") {
+        fun createRoute(studentId: String) = "student/$studentId"
+    }
 
-    object CreateStudentScreen : AppRoutes("students/create")
-    object StudentDetailScreen : AppRoutes("students/{studentId}") {
-        fun createRoute(studentId: String) = "students/$studentId"
+    object CreateStudentScreen : AppRoutes("create_student")
+    object EditStudentScreen : AppRoutes("edit_student/{studentId}/{isEdit}") {
+        fun createRoute(studentId: String, isEdit: Boolean) = "edit_student/$studentId/$isEdit"
     }
-    object EditStudentScreen : AppRoutes("students/edit/{studentId}?isEdit={isEdit}") {
-        fun createRoute(studentId: String, isEdit: Boolean = true) = "students/edit/$studentId?isEdit=$isEdit"
-    }
+
+    object FavoriteListScreen : AppRoutes("favorite") // Rute baru untuk FavoriteListScreen
 }

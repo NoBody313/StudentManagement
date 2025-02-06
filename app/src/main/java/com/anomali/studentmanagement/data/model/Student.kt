@@ -1,8 +1,5 @@
 package com.anomali.studentmanagement.data.model
 
-import com.anomali.studentmanagement.data.remote.dto.response.Father
-import com.anomali.studentmanagement.data.remote.dto.response.Mother
-
 data class Student(
     val id: Int,
     val name: String,

@@ -2,7 +2,6 @@ package com.anomali.studentmanagement.ui.screens.students
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -22,32 +21,66 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.anomali.studentmanagement.data.local.dao.StudentDao
+import com.anomali.studentmanagement.data.local.entity.StudentEntity
+import com.anomali.studentmanagement.data.mapper.toEntity
 import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.Student
 import com.anomali.studentmanagement.data.repository.StudentRepository
 import com.anomali.studentmanagement.ui.components.StudentListItem
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun StudentListScreen(navController: NavHostController, studentRepository: StudentRepository) {
-    var students by remember { mutableStateOf<List<Student>>(emptyList()) }
+fun StudentListScreen(
+    navController: NavHostController,
+    studentRepository: StudentRepository,
+    studentDao: StudentDao
+) {
+    var students by remember { mutableStateOf<List<Student>>(emptyList()) } // Data from DTO
+    var favoriteStudents by remember { mutableStateOf<List<StudentEntity>>(emptyList()) } // Data from DAO
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(true) {
-        try {
-            val response = studentRepository.getStudents()
-            if (response.isSuccessful) {
-                val studentListResponse = response.body()
-                students = studentListResponse?.students?.map { it.toModel() } ?: emptyList()
-            } else {
-                errorMessage = "Gagal mengambil data"
+    fun refreshData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            isLoading = true
+            try {
+                val currentFavoriteStudents = studentDao.getAllStudents()
+                favoriteStudents = currentFavoriteStudents
+                val response = studentRepository.getStudents()
+                if (response.isSuccessful) {
+                    val studentListResponse = response.body()
+                    val studentList =
+                        studentListResponse?.students?.map { it.toModel() } ?: emptyList()
+                    studentListResponse?.students?.forEach { studentDto ->
+                        val studentEntity = studentDto.toEntity()
+                        val existingStudent = currentFavoriteStudents.find { it.id == studentEntity.id }
+                        if (existingStudent == null) {
+                            studentDao.insert(studentEntity)
+                        } else {
+                            val updatedStudentEntity = studentEntity.copy(isFavorite = existingStudent.isFavorite)
+                            studentDao.update(updatedStudentEntity)
+                        }
+                    }
+                    val updatedFavoriteStudents = studentDao.getAllStudents()
+                    favoriteStudents = updatedFavoriteStudents
+                    students = studentList
+                } else {
+                    errorMessage = "Gagal mengambil data"
+                }
+            } catch (e: Exception) {
+                errorMessage = "Terjadi kesalahan: ${e.message}"
+            } finally {
+                isLoading = false
             }
-        } catch (e: Exception) {
-            errorMessage = "Terjadi kesalahan: ${e.message}"
-        } finally {
-            isLoading = false
         }
+    }
+
+    LaunchedEffect(true) {
+        refreshData()
     }
 
     Scaffold(
@@ -89,10 +122,22 @@ fun StudentListScreen(navController: NavHostController, studentRepository: Stude
 
                 if (students.isNotEmpty()) {
                     students.forEach { student ->
+                        val isFavorite =
+                            favoriteStudents.any { it.id == student.id && it.isFavorite }
                         StudentListItem(
-                            studentName = student.name,
-                            classLevel = student.classLevel,
-                            homeroomTeacher = student.homeroomTeacher
+                            student = student, // Meneruskan objek Student
+                            isFavorite = isFavorite,
+                            onFavoriteChanged = { newIsFavorite ->
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    studentRepository.updateFavoriteStatus(
+                                        student.id,
+                                        newIsFavorite
+                                    )
+                                    val updatedFavoriteStudents = studentDao.getAllStudents()
+                                    favoriteStudents = updatedFavoriteStudents
+                                }
+                            },
+                            studentRepository = studentRepository
                         )
                     }
                 }

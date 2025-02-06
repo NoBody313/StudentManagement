@@ -18,10 +18,16 @@ retrofit = "2.9.0"
 media3CommonKtx = "1.5.1"
 firebaseFirestoreKtx = "25.1.1"
 roomCommon = "2.6.1"
+roomCompiler = "2.6.1"
 roomKtx = "2.6.1"
+roomRuntime = "2.6.1"
+ksp = "2.0.21-1.0.27"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
@@ -51,4 +57,4 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+googleDevtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

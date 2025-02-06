@@ -3,8 +3,10 @@ package com.anomali.studentmanagement.ui.navigations
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
@@ -31,6 +33,11 @@ fun BottomNavigation(navController: NavController, pages: Int = 0) {
             Icons.AutoMirrored.Outlined.List
         ) to "Students",
         Triple(
+            AppRoutes.FavoriteListScreen,
+            Icons.Filled.Favorite,
+            Icons.Outlined.Favorite
+        ) to "Favorite",
+        Triple(
             AppRoutes.ProfileScreen,
             Icons.Filled.Person,
             Icons.Outlined.Person
@@ -52,7 +59,7 @@ fun BottomNavigation(navController: NavController, pages: Int = 0) {
                         contentDescription = label
                     )
                 },
-                selected = pages == index,
+                selected = selected,
                 label = { Text(label) },
                 alwaysShowLabel = true,
                 colors = NavigationBarItemColors(

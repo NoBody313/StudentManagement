@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,12 +25,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomali.studentmanagement.R
+import com.anomali.studentmanagement.data.model.Student
+import com.anomali.studentmanagement.data.repository.StudentRepository
 
 @Composable
 fun StudentListItem(
-    studentName: String,
-    classLevel: String,
-    homeroomTeacher: String,
+    student: Student,
+    isFavorite: Boolean,
+    onFavoriteChanged: (Boolean) -> Unit,
+    studentRepository: StudentRepository
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
@@ -48,7 +56,7 @@ fun StudentListItem(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = studentName,
+                text = student.name,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500),
@@ -61,7 +69,7 @@ fun StudentListItem(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = classLevel,
+                    text = student.classLevel,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(400),
@@ -70,7 +78,7 @@ fun StudentListItem(
                     )
                 )
                 Text(
-                    text = homeroomTeacher,
+                    text = student.homeroomTeacher,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(400),
@@ -79,6 +87,15 @@ fun StudentListItem(
                     )
                 )
             }
+        }
+
+        IconButton(onClick = {
+            onFavoriteChanged(!isFavorite)
+        }) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite"
+            )
         }
     }
 }

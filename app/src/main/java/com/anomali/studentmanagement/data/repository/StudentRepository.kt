@@ -1,12 +1,15 @@
 package com.anomali.studentmanagement.data.repository
 
 import android.content.Context
+import androidx.compose.animation.core.copy
+import com.anomali.studentmanagement.data.local.dao.StudentDao
 import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.Student
 import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponse
 import com.anomali.studentmanagement.data.remote.network.RetrofitInstance
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
+import javax.inject.Inject
 
 interface StudentRepository {
     suspend fun getStudents(): Response<StudentListResponse>
@@ -14,9 +17,14 @@ interface StudentRepository {
     suspend fun createStudent(student: Student): Response<Student>
     suspend fun updateStudent(id: Int, student: Student): Response<Student>
     suspend fun deleteStudent(id: Int): Response<Unit>
+
+    suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean)
 }
 
-class StudentRepositoryImpl(private val context: Context) : StudentRepository {
+class StudentRepositoryImpl @Inject constructor(
+    private val context: Context,
+    private val studentDao: StudentDao
+) : StudentRepository {
     init {
         RetrofitInstance.initRetrofit(context)
     }
@@ -65,5 +73,13 @@ class StudentRepositoryImpl(private val context: Context) : StudentRepository {
 
     override suspend fun deleteStudent(id: Int): Response<Unit> {
         return studentService.deleteStudent(id)
+    }
+
+    override suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean) {
+        val studentEntity = studentDao.getStudentById(id)
+        studentEntity?.let {
+            val updatedStudentEntity = it.copy(isFavorite = isFavorite)
+            studentDao.update(updatedStudentEntity)
+        }
     }
 }

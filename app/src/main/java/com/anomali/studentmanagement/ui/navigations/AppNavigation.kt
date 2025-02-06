@@ -10,12 +10,14 @@ import androidx.navigation.navArgument
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPreferences
+import com.anomali.studentmanagement.data.local.database.StudentDatabase
 import com.anomali.studentmanagement.data.repository.AuthRepositoryImpl
 import com.anomali.studentmanagement.data.repository.StudentRepositoryImpl
 import com.anomali.studentmanagement.ui.screens.DashboardScreen
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
+import com.anomali.studentmanagement.ui.screens.favorites.FavoriteListScreen
 import com.anomali.studentmanagement.ui.screens.students.CreateEditStudentScreen
 import com.anomali.studentmanagement.ui.screens.students.StudentDetailScreen
 import com.anomali.studentmanagement.ui.screens.students.StudentListScreen
@@ -26,7 +28,12 @@ fun AppNavigation() {
     val context = LocalContext.current
     val token = getTokenFromPreferences(context)
     val authRepository = AuthRepositoryImpl(context = context)
-    val studentRepository = StudentRepositoryImpl(context = context)
+    val studentRepository = StudentRepositoryImpl(
+        context = context,
+        studentDao = StudentDatabase.getDatabase(context).studentDao()
+    )
+    val studentDao = StudentDatabase.getDatabase(context).studentDao()
+
 
     NavHost(
         navController,
@@ -65,7 +72,15 @@ fun AppNavigation() {
         composable(AppRoutes.StudentListScreen.route) {
             StudentListScreen(
                 navController = navController,
-                studentRepository = studentRepository
+                studentRepository = studentRepository,
+                studentDao = studentDao,
+            )
+        }
+        composable(AppRoutes.FavoriteListScreen.route) {
+            FavoriteListScreen(
+                navController = navController,
+                studentRepository = studentRepository,
+                studentDao = studentDao
             )
         }
         composable(AppRoutes.ProfileScreen.route) {
@@ -74,8 +89,8 @@ fun AppNavigation() {
                 authRepository = authRepository,
                 token = token,
                 onLoggedOut = {
-                    navController.navigate("login") {
-                        popUpTo("profile") { inclusive = true }
+                    navController.navigate(AppRoutes.LoginScreen.route) {
+                        popUpTo(AppRoutes.ProfileScreen.route) { inclusive = true }
                     }
                 },
             )
@@ -101,30 +116,12 @@ fun AppNavigation() {
             if (studentId != null) {
                 CreateEditStudentScreen(navController, isEdit = isEdit, studentId = studentId)
             } else {
-                // Handle case when studentId is null, e.g., navigate back or show an error
                 navController.popBackStack()
             }
         }
 
         composable(AppRoutes.CreateStudentScreen.route) {
             CreateEditStudentScreen(navController, isEdit = false, studentId = null)
-        }
-
-        composable(
-            route = AppRoutes.EditStudentScreen.route,
-            arguments = listOf(
-                navArgument("studentId") { type = NavType.StringType },
-                navArgument("isEdit") { type = NavType.BoolType }
-            )
-        ) { backStackEntry ->
-            val studentId = backStackEntry.arguments?.getString("studentId")
-            val isEdit = backStackEntry.arguments?.getBoolean("isEdit") ?: true
-            if (studentId != null) {
-                CreateEditStudentScreen(navController, isEdit = isEdit, studentId = studentId)
-            } else {
-                // Handle case when studentId is null, e.g., navigate back or show an error
-                navController.popBackStack()
-            }
         }
     }
 }

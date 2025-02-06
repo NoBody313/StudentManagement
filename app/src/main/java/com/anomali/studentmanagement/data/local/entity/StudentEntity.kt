@@ -17,8 +17,7 @@ data class StudentEntity(
     val dateOfBirth: String,
     val placeOfBirth: String,
     val gender: String,
-    @Relation(parentColumn = "id", entityColumn = "studentId") val father: FatherEntity,
-    @Relation(parentColumn = "id", entityColumn = "studentId") val mother: MotherEntity,
     val createdAt: String,
     val updatedAt: String,
+    val isFavorite: Boolean = false
 )
