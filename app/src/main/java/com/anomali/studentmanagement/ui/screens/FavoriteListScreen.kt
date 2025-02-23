@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.favorites
+    package com.anomali.studentmanagement.ui.screens.favorites
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

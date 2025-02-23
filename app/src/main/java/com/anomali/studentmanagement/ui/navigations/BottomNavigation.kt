@@ -1,13 +1,9 @@
 package com.anomali.studentmanagement.ui.navigations
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,32 +12,40 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.anomali.studentmanagement.R
 import com.anomali.studentmanagement.core.routes.AppRoutes
 
 @Composable
 fun BottomNavigation(navController: NavController, pages: Int = 0) {
     val menuItems = listOf(
         Triple(
-            AppRoutes.DashboardScreen,
-            Icons.Filled.Home,
-            Icons.Outlined.Home
+            AppRoutes.AdminDashboardScreen,
+            R.drawable.home_on,
+            R.drawable.home_off
         ) to "Dashboard",
         Triple(
-            AppRoutes.StudentListScreen,
-            Icons.AutoMirrored.Filled.List,
-            Icons.AutoMirrored.Outlined.List
-        ) to "Students",
+            AppRoutes.ManagementScreen,
+            R.drawable.management_on,
+            R.drawable.management_off
+        ) to "Manajemen",
         Triple(
             AppRoutes.FavoriteListScreen,
-            Icons.Filled.Favorite,
-            Icons.Outlined.Favorite
-        ) to "Favorite",
+            R.drawable.add_on,
+            R.drawable.add_off
+        ) to "Tambah Cepat",
         Triple(
             AppRoutes.ProfileScreen,
-            Icons.Filled.Person,
-            Icons.Outlined.Person
-        ) to "Profile"
+            R.drawable.calendar_on,
+            R.drawable.calendar_off
+        ) to "Jadwal",
+        Triple(
+            AppRoutes.LogoutScreen,
+            R.drawable.settings_on,
+            R.drawable.settings_off
+        ) to "Pengaturan"
     )
 
     NavigationBar(
@@ -55,12 +59,12 @@ fun BottomNavigation(navController: NavController, pages: Int = 0) {
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (selected) fillIcon else outlineIcon,
+                        painter = painterResource(id = if (selected) fillIcon else outlineIcon),
                         contentDescription = label
                     )
                 },
                 selected = selected,
-                label = { Text(label) },
+                label = { Text(label, fontSize = 9.sp) },
                 alwaysShowLabel = true,
                 colors = NavigationBarItemColors(
                     selectedIconColor = Color(0xFF2563EB),

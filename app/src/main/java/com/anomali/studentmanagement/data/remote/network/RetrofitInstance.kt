@@ -3,15 +3,18 @@ package com.anomali.studentmanagement.data.remote.network
 import android.content.Context
 import com.anomali.studentmanagement.core.utils.AuthInterceptor
 import com.anomali.studentmanagement.data.remote.api.AuthService
+import com.anomali.studentmanagement.data.remote.api.ClassesService
 import com.anomali.studentmanagement.data.remote.api.StudentService
+import com.anomali.studentmanagement.data.remote.api.SubjectService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    private const val BASE_URL = "http://192.168.1.114:8000/"
+    private const val BASE_URL = "http://192.168.18.26:8000/"
 
     private val gson = GsonBuilder()
         .setLenient()
@@ -20,8 +23,13 @@ object RetrofitInstance {
     private lateinit var retrofit: Retrofit
 
     fun initRetrofit(context: Context) {
+        val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
         val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
+            .addInterceptor(interceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
@@ -39,5 +47,13 @@ object RetrofitInstance {
 
     fun getStudentService(): StudentService {
         return retrofit.create(StudentService::class.java)
+    }
+
+    fun getSubjectService(): SubjectService {
+        return retrofit.create(SubjectService::class.java)
+    }
+
+    fun getClassService(): ClassesService {
+        return retrofit.create(ClassesService::class.java)
     }
 }

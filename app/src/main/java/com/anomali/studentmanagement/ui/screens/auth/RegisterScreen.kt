@@ -141,7 +141,7 @@ fun RegisterScreen(
                                             "Registration Successful!",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        navController.navigate(AppRoutes.DashboardScreen.route)
+                                        navController.navigate(AppRoutes.AdminDashboardScreen.route)
                                     } catch (e: Exception) {
                                         errorMessage = "Registration failed: ${e.message}"
                                     } finally {

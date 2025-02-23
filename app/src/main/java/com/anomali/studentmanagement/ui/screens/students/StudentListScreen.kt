@@ -125,7 +125,7 @@ fun StudentListScreen(
                         val isFavorite =
                             favoriteStudents.any { it.id == student.id && it.isFavorite }
                         StudentListItem(
-                            student = student, // Meneruskan objek Student
+                            student = student,
                             isFavorite = isFavorite,
                             onFavoriteChanged = { newIsFavorite ->
                                 CoroutineScope(Dispatchers.IO).launch {

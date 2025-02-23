@@ -12,9 +12,19 @@ import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPreferences
 import com.anomali.studentmanagement.data.local.database.StudentDatabase
 import com.anomali.studentmanagement.data.repository.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.ClassesRepository
+import com.anomali.studentmanagement.data.repository.ClassesRepositoryImpl
 import com.anomali.studentmanagement.data.repository.StudentRepositoryImpl
-import com.anomali.studentmanagement.ui.screens.DashboardScreen
+import com.anomali.studentmanagement.data.repository.SubjectRepositoryImpl
+import com.anomali.studentmanagement.ui.screens.admin.DashboardScreen
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
+import com.anomali.studentmanagement.ui.screens.admin.ManagementScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.kelas.ClassesScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.kelas.CreateKelasScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.kelas.DetailClassesScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.subject.CreateSubjectScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.subject.DetailSubjectScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.subject.SubjectScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
 import com.anomali.studentmanagement.ui.screens.favorites.FavoriteListScreen
@@ -32,17 +42,19 @@ fun AppNavigation() {
         context = context,
         studentDao = StudentDatabase.getDatabase(context).studentDao()
     )
+    val classesRepository = ClassesRepositoryImpl(context = context)
+    val subjectRepository = SubjectRepositoryImpl(context = context)
     val studentDao = StudentDatabase.getDatabase(context).studentDao()
 
 
     NavHost(
         navController,
-        startDestination = if (token.isNotEmpty()) AppRoutes.DashboardScreen.route else AppRoutes.LoginScreen.route
+        startDestination = if (token.isNotEmpty()) AppRoutes.AdminDashboardScreen.route else AppRoutes.LoginScreen.route
     ) {
         composable(AppRoutes.LoginScreen.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    navController.navigate(AppRoutes.DashboardScreen.route) {
+                    navController.navigate(AppRoutes.AdminDashboardScreen.route) {
                         popUpTo(AppRoutes.LoginScreen.route) { inclusive = true }
                     }
                 },
@@ -60,12 +72,75 @@ fun AppNavigation() {
             navController.navigate(AppRoutes.LoginScreen.route)
         }
 
-        composable(AppRoutes.DashboardScreen.route) {
+        // Admin
+        composable(AppRoutes.AdminDashboardScreen.route) {
             DashboardScreen(
                 navController = navController,
                 authRepository = authRepository,
                 context = context,
                 token = token
+            )
+        }
+        // Management
+        composable(AppRoutes.ManagementScreen.route) {
+            ManagementScreen(
+                navController = navController
+            )
+        }
+//        composable(AppRoutes.ManagementGuruScreen.route) {
+//            ManagementScreen(
+//                navController = navController
+//            )
+//        }
+//        composable(AppRoutes.ManagementSiswaScreen.route) {
+//            ManagementScreen(
+//                navController = navController
+//            )
+//        }
+        composable(AppRoutes.ManagementKelasScreen.route) {
+            ClassesScreen(
+                navController = navController,
+                classesRepository = classesRepository
+            )
+        }
+        composable(AppRoutes.ManagementSubjectScreen.route) {
+            SubjectScreen(
+                navController = navController,
+                subjectRepository = subjectRepository
+            )
+        }
+
+        // Create
+        composable(AppRoutes.CreateSubjectScreen.route) {
+            CreateSubjectScreen(
+                navController = navController,
+                subjectRepository = subjectRepository
+            )
+        }
+
+        composable(AppRoutes.CreateKelasScreen.route) {
+            CreateKelasScreen(
+                navController = navController,
+                classesRepository = classesRepository
+            )
+        }
+
+        // Detail
+        composable(AppRoutes.DetailSubjectScreen.route) {
+            val subjectId = it.arguments?.getString("subjectId")?.toIntOrNull() ?: 0
+            DetailSubjectScreen(
+                navController = navController,
+                subjectRepository = subjectRepository,
+                subjectId = subjectId
+            )
+        }
+
+        composable(AppRoutes.DetailKelasScreen.route) {
+            val classesId = it.arguments?.getString("classesId")?.toIntOrNull() ?: 0
+            DetailClassesScreen(
+                navController = navController,
+                classesRepository = classesRepository,
+                classesId = classesId
             )
         }
 
