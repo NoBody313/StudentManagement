@@ -1,0 +1,82 @@
+package com.anomali.studentmanagement.data.repository.admin
+
+import android.content.Context
+import android.util.Log
+import com.anomali.studentmanagement.data.mapper.toModel
+import com.anomali.studentmanagement.data.model.student.Student
+import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
+import com.anomali.studentmanagement.data.remote.dto.response.StudentCreateResponse
+import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponse
+import com.anomali.studentmanagement.data.remote.network.RetrofitInstance
+import com.google.gson.Gson
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Response
+import javax.inject.Inject
+
+interface StudentRepository {
+    suspend fun getStudents(): Response<StudentListResponse>
+    suspend fun getStudentById(id: Int): Response<Student>
+    suspend fun createStudent(request: StudentRequest): Response<StudentCreateResponse>
+    suspend fun updateStudent(id: Int, request: StudentRequest): Response<StudentCreateResponse>
+    suspend fun deleteStudent(id: Int): Response<Unit>
+}
+
+class StudentRepositoryImpl @Inject constructor(
+    private val context: Context
+) : StudentRepository {
+    init {
+        RetrofitInstance.initRetrofit(context)
+    }
+
+    private val studentService = RetrofitInstance.getStudentService()
+
+    override suspend fun getStudents(): Response<StudentListResponse> {
+        try {
+            val response = studentService.getStudents()
+            if (response.isSuccessful) {
+                val subjects = response.body()
+                Log.d("DEBUG", "Subjects: $subjects")
+                return Response.success(subjects)
+            } else {
+                throw Exception("Error: ${response.code()} ${response.message()}")
+            }
+        } catch (e: Exception) {
+            throw Exception("Error: ${e.message}")
+        }
+    }
+
+    override suspend fun getStudentById(id: Int): Response<Student> {
+        val response = studentService.getStudentById(id)
+        return if (response.isSuccessful) {
+            Response.success(response.body()?.toModel())
+        } else {
+            Response.error(response.code(), response.errorBody()!!)
+        }
+    }
+
+    override suspend fun createStudent(request: StudentRequest): Response<StudentCreateResponse> {
+        val response = studentService.createStudent(request)
+        return if (response.isSuccessful) {
+            Response.success(response.body())
+        } else {
+            Response.error(response.code(), response.errorBody() ?: "".toResponseBody(null))
+        }
+    }
+
+    override suspend fun updateStudent(id: Int, request: StudentRequest): Response<StudentCreateResponse> {
+        val response = studentService.updateStudent(id, request)
+
+        if (response.isSuccessful) {
+            Log.d("UpdateStudent", "Response: ${response.body()}")
+            Log.d("UpdateStudent", "Request: ${Gson().toJson(request)}")
+            return Response.success(response.body())
+        } else {
+            Log.e("UpdateStudent", "Error: ${response.code()} - ${response.errorBody()}")
+            return Response.error(response.code(), response.errorBody()!!)
+        }
+    }
+
+    override suspend fun deleteStudent(id: Int): Response<Unit> {
+        return studentService.deleteStudent(id)
+    }
+}

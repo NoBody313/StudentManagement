@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.anomali.studentmanagement.R
+import com.anomali.studentmanagement.core.routes.AppRoutes
 
 @Composable
 fun TopNavigationNoIcon(navController: NavController) {
@@ -35,7 +36,8 @@ fun TopNavigationNoIcon(navController: NavController) {
 
     currentTitle = when (currentRoute) {
         "guru" -> "Manajemen Guru"
-        "siswa" -> "Manajemen Siswa"
+        AppRoutes.CreateStudentScreen.route -> "Manajemen Siswa"
+        AppRoutes.DetailSiswaScreen.route -> "Manajemen Siswa"
         "kelas" -> "Manajemen Kelas"
         "pelajaran" -> "Manajemen Pelajaran"
         else -> "Manajemen"

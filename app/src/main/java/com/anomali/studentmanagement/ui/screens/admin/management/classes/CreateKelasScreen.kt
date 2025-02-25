@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.admin.management.kelas
+package com.anomali.studentmanagement.ui.screens.admin.management.classes
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.anomali.studentmanagement.data.repository.ClassesRepository
+import com.anomali.studentmanagement.data.repository.admin.ClassesRepository
 import com.anomali.studentmanagement.ui.components.LabeledInputField
 import com.anomali.studentmanagement.ui.navigations.TopNavigationNoIcon
 import kotlinx.coroutines.launch

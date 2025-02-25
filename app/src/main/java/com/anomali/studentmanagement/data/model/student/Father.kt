@@ -1,8 +1,6 @@
-package com.anomali.studentmanagement.data.model
+package com.anomali.studentmanagement.data.model.student
 
-import java.util.Date
-
-data class Mother(
+data class Father(
     val id: Int,
     val name: String,
     val phoneNumber: String,

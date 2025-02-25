@@ -1,5 +1,6 @@
 package com.anomali.studentmanagement.ui.navigations
 
+//import com.anomali.studentmanagement.ui.screens.favorites.FavoriteListScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
@@ -11,26 +12,27 @@ import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPreferences
 import com.anomali.studentmanagement.data.local.database.StudentDatabase
-import com.anomali.studentmanagement.data.repository.AuthRepositoryImpl
-import com.anomali.studentmanagement.data.repository.ClassesRepository
-import com.anomali.studentmanagement.data.repository.ClassesRepositoryImpl
-import com.anomali.studentmanagement.data.repository.StudentRepositoryImpl
-import com.anomali.studentmanagement.data.repository.SubjectRepositoryImpl
-import com.anomali.studentmanagement.ui.screens.admin.DashboardScreen
+import com.anomali.studentmanagement.data.repository.admin.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.admin.ClassesRepositoryImpl
+import com.anomali.studentmanagement.data.repository.admin.StudentRepositoryImpl
+import com.anomali.studentmanagement.data.repository.admin.SubjectRepositoryImpl
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
+import com.anomali.studentmanagement.ui.screens.admin.DashboardScreen
 import com.anomali.studentmanagement.ui.screens.admin.ManagementScreen
-import com.anomali.studentmanagement.ui.screens.admin.management.kelas.ClassesScreen
-import com.anomali.studentmanagement.ui.screens.admin.management.kelas.CreateKelasScreen
-import com.anomali.studentmanagement.ui.screens.admin.management.kelas.DetailClassesScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.classes.ClassesScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.classes.CreateKelasScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.classes.DetailClassesScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.student.CreateStudentScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.student.DetailStudentScreen
+import com.anomali.studentmanagement.ui.screens.admin.management.student.StudentScreen
 import com.anomali.studentmanagement.ui.screens.admin.management.subject.CreateSubjectScreen
 import com.anomali.studentmanagement.ui.screens.admin.management.subject.DetailSubjectScreen
 import com.anomali.studentmanagement.ui.screens.admin.management.subject.SubjectScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
-import com.anomali.studentmanagement.ui.screens.favorites.FavoriteListScreen
 import com.anomali.studentmanagement.ui.screens.students.CreateEditStudentScreen
-import com.anomali.studentmanagement.ui.screens.students.StudentDetailScreen
-import com.anomali.studentmanagement.ui.screens.students.StudentListScreen
+
+//import com.anomali.studentmanagement.ui.screens.students.StudentListScreen
 
 @Composable
 fun AppNavigation() {
@@ -39,8 +41,7 @@ fun AppNavigation() {
     val token = getTokenFromPreferences(context)
     val authRepository = AuthRepositoryImpl(context = context)
     val studentRepository = StudentRepositoryImpl(
-        context = context,
-        studentDao = StudentDatabase.getDatabase(context).studentDao()
+        context = context
     )
     val classesRepository = ClassesRepositoryImpl(context = context)
     val subjectRepository = SubjectRepositoryImpl(context = context)
@@ -92,11 +93,12 @@ fun AppNavigation() {
 //                navController = navController
 //            )
 //        }
-//        composable(AppRoutes.ManagementSiswaScreen.route) {
-//            ManagementScreen(
-//                navController = navController
-//            )
-//        }
+        composable(AppRoutes.ManagementSiswaScreen.route) {
+            StudentScreen(
+                navController = navController,
+                studentRepository = studentRepository
+            )
+        }
         composable(AppRoutes.ManagementKelasScreen.route) {
             ClassesScreen(
                 navController = navController,
@@ -125,6 +127,14 @@ fun AppNavigation() {
             )
         }
 
+        composable(AppRoutes.CreateStudentScreen.route) {
+            CreateStudentScreen(
+                navController = navController,
+                studentRepository = studentRepository,
+                classesRepository = classesRepository
+            )
+        }
+
         // Detail
         composable(AppRoutes.DetailSubjectScreen.route) {
             val subjectId = it.arguments?.getString("subjectId")?.toIntOrNull() ?: 0
@@ -144,20 +154,22 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoutes.StudentListScreen.route) {
-            StudentListScreen(
+        composable(AppRoutes.DetailSiswaScreen.route) {
+            val studentId = it.arguments?.getString("studentId")?.toIntOrNull() ?: 0
+            DetailStudentScreen(
                 navController = navController,
                 studentRepository = studentRepository,
-                studentDao = studentDao,
+                classesRepository = classesRepository,
+                studentId = studentId,
             )
         }
-        composable(AppRoutes.FavoriteListScreen.route) {
-            FavoriteListScreen(
-                navController = navController,
-                studentRepository = studentRepository,
-                studentDao = studentDao
-            )
-        }
+//        composable(AppRoutes.FavoriteListScreen.route) {
+//            FavoriteListScreen(
+//                navController = navController,
+//                studentRepository = studentRepository,
+//                studentDao = studentDao
+//            )
+//        }
         composable(AppRoutes.ProfileScreen.route) {
             ProfileScreen(
                 navController,
@@ -170,14 +182,14 @@ fun AppNavigation() {
                 },
             )
         }
-        composable(AppRoutes.StudentDetailScreen.route) { backStackEntry ->
-            val studentId = backStackEntry.arguments?.getString("studentId")
-            if (studentId != null) {
-                StudentDetailScreen(navController, studentId)
-            } else {
-                navController.popBackStack()
-            }
-        }
+//        composable(AppRoutes.StudentDetailScreen.route) { backStackEntry ->
+//            val studentId = backStackEntry.arguments?.getString("studentId")
+//            if (studentId != null) {
+//                StudentDetailScreen(navController, studentId)
+//            } else {
+//                navController.popBackStack()
+//            }
+//        }
 
         composable(
             route = AppRoutes.EditStudentScreen.route,
@@ -195,8 +207,8 @@ fun AppNavigation() {
             }
         }
 
-        composable(AppRoutes.CreateStudentScreen.route) {
-            CreateEditStudentScreen(navController, isEdit = false, studentId = null)
-        }
+//        composable(AppRoutes.CreateStudentScreen.route) {
+//            CreateEditStudentScreen(navController, isEdit = false, studentId = null)
+//        }
     }
 }

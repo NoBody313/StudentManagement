@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.admin.management.kelas
+package com.anomali.studentmanagement.ui.screens.admin.management.classes
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.data.model.Classes
-import com.anomali.studentmanagement.data.repository.ClassesRepository
+import com.anomali.studentmanagement.data.repository.admin.ClassesRepository
 import com.anomali.studentmanagement.ui.components.EditButton
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
 

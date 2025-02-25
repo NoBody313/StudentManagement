@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.anomali.studentmanagement.core.routes.AppRoutes
-import com.anomali.studentmanagement.data.repository.AuthRepository
+import com.anomali.studentmanagement.data.repository.admin.AuthRepository
 import kotlinx.coroutines.launch
 
 @Composable

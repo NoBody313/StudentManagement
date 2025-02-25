@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.anomali.studentmanagement.data.model.User
-import com.anomali.studentmanagement.data.repository.AuthRepository
+import com.anomali.studentmanagement.data.repository.admin.AuthRepository
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import kotlinx.coroutines.launch
 

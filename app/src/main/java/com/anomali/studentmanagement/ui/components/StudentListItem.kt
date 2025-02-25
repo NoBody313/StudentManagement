@@ -25,77 +25,77 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomali.studentmanagement.R
-import com.anomali.studentmanagement.data.model.Student
-import com.anomali.studentmanagement.data.repository.StudentRepository
+import com.anomali.studentmanagement.data.model.student.Student
+import com.anomali.studentmanagement.data.repository.admin.StudentRepository
 
-@Composable
-fun StudentListItem(
-    student: Student,
-    isFavorite: Boolean,
-    onFavoriteChanged: (Boolean) -> Unit,
-    studentRepository: StudentRepository
-) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(end = 16.dp)
-            .width(193.dp)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.image),
-            contentDescription = "image description",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .width(64.dp)
-                .height(64.dp)
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            Text(
-                text = student.name,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF000000),
-                    textAlign = TextAlign.Center,
-                )
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Text(
-                    text = student.classLevel,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                    )
-                )
-                Text(
-                    text = student.homeroomTeacher,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                    )
-                )
-            }
-        }
-
-        IconButton(onClick = {
-            onFavoriteChanged(!isFavorite)
-        }) {
-            Icon(
-                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Favorite"
-            )
-        }
-    }
-}
+//@Composable
+//fun StudentListItem(
+//    student: Student,
+//    isFavorite: Boolean,
+//    onFavoriteChanged: (Boolean) -> Unit,
+//    studentRepository: StudentRepository
+//) {
+//    Row(
+//        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
+//        verticalAlignment = Alignment.CenterVertically,
+//        modifier = Modifier
+//            .padding(end = 16.dp)
+//            .width(193.dp)
+//    ) {
+//        Image(
+//            painter = painterResource(R.drawable.image),
+//            contentDescription = "image description",
+//            contentScale = ContentScale.FillBounds,
+//            modifier = Modifier
+//                .width(64.dp)
+//                .height(64.dp)
+//        )
+//
+//        Column(
+//            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+//            horizontalAlignment = Alignment.Start,
+//        ) {
+//            Text(
+//                text = student.name,
+//                style = TextStyle(
+//                    fontSize = 16.sp,
+//                    fontWeight = FontWeight(500),
+//                    color = Color(0xFF000000),
+//                    textAlign = TextAlign.Center,
+//                )
+//            )
+//            Column(
+//                verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically),
+//                horizontalAlignment = Alignment.Start,
+//            ) {
+//                Text(
+//                    text = student.classLevel,
+//                    style = TextStyle(
+//                        fontSize = 12.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                        textAlign = TextAlign.Center,
+//                    )
+//                )
+//                Text(
+//                    text = student.homeroomTeacher,
+//                    style = TextStyle(
+//                        fontSize = 12.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                        textAlign = TextAlign.Center,
+//                    )
+//                )
+//            }
+//        }
+//
+//        IconButton(onClick = {
+//            onFavoriteChanged(!isFavorite)
+//        }) {
+//            Icon(
+//                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+//                contentDescription = "Favorite"
+//            )
+//        }
+//    }
+//}

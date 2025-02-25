@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.data.model.Subject
-import com.anomali.studentmanagement.data.repository.SubjectRepository
+import com.anomali.studentmanagement.data.repository.admin.SubjectRepository
 import com.anomali.studentmanagement.ui.components.EditButton
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
 

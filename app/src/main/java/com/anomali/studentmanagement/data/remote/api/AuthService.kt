@@ -2,9 +2,9 @@ package com.anomali.studentmanagement.data.remote.api
 
 import com.anomali.studentmanagement.data.remote.dto.request.LoginRequest
 import com.anomali.studentmanagement.data.remote.dto.request.RegisterRequest
-import com.anomali.studentmanagement.data.remote.dto.response.LoginResponseDTO
-import com.anomali.studentmanagement.data.remote.dto.response.LogoutResponseDTO
-import com.anomali.studentmanagement.data.remote.dto.response.RegisterResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.auth.LoginResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.auth.LogoutResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.auth.RegisterResponseDTO
 import com.anomali.studentmanagement.data.remote.dto.response.UserDTO
 import retrofit2.Response
 import retrofit2.http.Body

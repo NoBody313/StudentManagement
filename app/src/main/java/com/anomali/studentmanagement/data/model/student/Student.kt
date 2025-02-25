@@ -1,17 +1,17 @@
-package com.anomali.studentmanagement.data.model
+package com.anomali.studentmanagement.data.model.student
+
+import com.anomali.studentmanagement.data.model.Classes
+import com.anomali.studentmanagement.data.model.User
 
 data class Student(
     val id: Int,
-    val name: String,
     val nis: String,
     val nisn: String,
-    val email: String,
-    val phoneNumber: String,
-    val classLevel: String,
-    val homeroomTeacher: String,
     val dateOfBirth: String,
     val placeOfBirth: String,
     val gender: String,
+    val classId: Classes,
+    val user: User,
     val father: Father,
     val mother: Mother,
     val createdAt: String,

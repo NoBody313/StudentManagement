@@ -29,13 +29,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.anomali.studentmanagement.data.model.Subject
-import com.anomali.studentmanagement.data.repository.SubjectRepository
+import com.anomali.studentmanagement.data.repository.admin.SubjectRepository
 import com.anomali.studentmanagement.ui.components.LabeledInputField
 import com.anomali.studentmanagement.ui.navigations.TopNavigationNoIcon
 import kotlinx.coroutines.launch

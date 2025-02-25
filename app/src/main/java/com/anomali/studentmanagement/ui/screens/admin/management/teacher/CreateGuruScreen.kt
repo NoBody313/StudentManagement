@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.admin.management.guru
+package com.anomali.studentmanagement.ui.screens.admin.management.teacher
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

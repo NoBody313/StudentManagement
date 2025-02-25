@@ -63,7 +63,7 @@ fun ManagementScreen(navController: NavController) {
                 ManagementMenuItem(
                     icon = R.drawable.group,
                     text = "Siswa",
-                    onClick = { /* TODO: Handle Siswa click */ }
+                    onClick = { navController.navigate(AppRoutes.ManagementSiswaScreen.route) }
                 )
                 ManagementMenuItem(
                     icon = R.drawable.school,

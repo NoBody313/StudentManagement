@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.data.repository
+package com.anomali.studentmanagement.data.repository.admin
 
 import android.content.Context
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
@@ -6,7 +6,7 @@ import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.User
 import com.anomali.studentmanagement.data.remote.dto.request.LoginRequest
 import com.anomali.studentmanagement.data.remote.dto.request.RegisterRequest
-import com.anomali.studentmanagement.data.remote.dto.response.LoginResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.auth.LoginResponseDTO
 import com.anomali.studentmanagement.data.remote.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

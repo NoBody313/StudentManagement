@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.data.repository
+package com.anomali.studentmanagement.data.repository.admin
 
 import android.content.Context
 import com.anomali.studentmanagement.data.mapper.toModel

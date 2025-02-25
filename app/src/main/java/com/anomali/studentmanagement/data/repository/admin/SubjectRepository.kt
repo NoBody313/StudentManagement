@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.data.repository
+package com.anomali.studentmanagement.data.repository.admin
 
 import android.content.Context
 import com.anomali.studentmanagement.data.mapper.toModel
@@ -48,7 +48,7 @@ class SubjectRepositoryImpl @Inject constructor(
         try {
             val response = subjectService.getSubjectById(id)
             return if (response.isSuccessful) {
-                Response.success(response.body()!!.toModel())
+                Response.success(response.body()?.toModel())
             } else {
                 Response.error(response.code(), response.errorBody()!!)
             }
@@ -63,7 +63,7 @@ class SubjectRepositoryImpl @Inject constructor(
                 val request = SubjectRequest(name)
                 val response = subjectService.createSubject(request)
                 if (response.isSuccessful) {
-                    Response.success(response.body()!!.toModel())
+                    Response.success(response.body()?.toModel())
                 } else {
                     Response.error(response.code(), response.errorBody()!!)
                 }

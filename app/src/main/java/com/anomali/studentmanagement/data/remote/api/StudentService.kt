@@ -1,14 +1,15 @@
 package com.anomali.studentmanagement.data.remote.api
 
-import com.anomali.studentmanagement.data.remote.dto.response.StudentResponseDTO
-import com.anomali.studentmanagement.data.model.Student
+import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
+import com.anomali.studentmanagement.data.remote.dto.response.StudentCreateResponse
 import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponse
+import com.anomali.studentmanagement.data.remote.dto.response.StudentResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface StudentService {
@@ -20,10 +21,10 @@ interface StudentService {
     suspend fun getStudentById(@Path("id") id: Int): Response<StudentResponseDTO>
 
     @POST("api/students")
-    suspend fun createStudent(@Body student: Student): Response<StudentResponseDTO>
+    suspend fun createStudent(@Body request: StudentRequest): Response<StudentCreateResponse>
 
-    @PUT("api/students/{id}")
-    suspend fun updateStudent(@Path("id") id: Int, @Body student: Student): Response<StudentResponseDTO>
+    @PATCH("api/students/{id}")
+    suspend fun updateStudent(@Path("id") id: Int, @Body request: StudentRequest): Response<StudentCreateResponse>
 
     @DELETE("api/students/{id}")
     suspend fun deleteStudent(@Path("id") id: Int): Response<Unit>

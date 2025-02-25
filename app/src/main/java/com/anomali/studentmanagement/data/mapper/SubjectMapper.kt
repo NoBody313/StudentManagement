@@ -1,6 +1,5 @@
 package com.anomali.studentmanagement.data.mapper
 
-import com.anomali.studentmanagement.data.model.Classes
 import com.anomali.studentmanagement.data.model.Subject
 import com.anomali.studentmanagement.data.remote.dto.response.SubjectDTO
 import com.anomali.studentmanagement.data.remote.dto.response.SubjectResponseDTO

@@ -11,7 +11,7 @@ sealed class AppRoutes(val route: String) {
         fun createRoute(studentId: String) = "student/$studentId"
     }
 
-    object CreateStudentScreen : AppRoutes("create_student")
+//    object CreateStudentScreen : AppRoutes("create_student")
     object EditStudentScreen : AppRoutes("edit_student/{studentId}/{isEdit}") {
         fun createRoute(studentId: String, isEdit: Boolean) = "edit_student/$studentId/$isEdit"
     }
@@ -27,12 +27,14 @@ sealed class AppRoutes(val route: String) {
     object ManagementSubjectScreen : AppRoutes("admin/management/subject")
     // Create
     object CreateGuruScreen : AppRoutes("admin/management/guru/create")
-    object CreateSiswaScreen : AppRoutes("admin/management/siswa/create")
+    object CreateStudentScreen : AppRoutes("admin/management/siswa/create")
     object CreateKelasScreen : AppRoutes("admin/management/kelas/create")
     object CreateSubjectScreen : AppRoutes("admin/management/subject/create")
     // Detail
     object DetailGuruScreen : AppRoutes("admin/management/guru/detail")
-    object DetailSiswaScreen : AppRoutes("admin/management/siswa/detail")
+    object DetailSiswaScreen : AppRoutes("admin/management/siswa/detail/{studentId}") {
+        fun siswaCreateRoute(studentId: Int) = "admin/management/siswa/detail/$studentId"
+    }
     object DetailKelasScreen : AppRoutes("admin/management/kelas/detail/{classesId}") {
         fun classesCreateRoute(classesId: Int) = "admin/management/kelas/detail/$classesId"
     }
