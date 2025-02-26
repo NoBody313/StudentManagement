@@ -64,8 +64,8 @@ fun TopNavigation(navController: NavController) {
 
     fun onAddClicked(currentRoute: String?) {
         when (currentRoute) {
-            "guru" -> {
-                navController.navigate("tambah_guru")
+            AppRoutes.ManagementGuruScreen.route -> {
+                navController.navigate(AppRoutes.CreateGuruScreen.route)
             }
 
             AppRoutes.ManagementSiswaScreen.route -> {
@@ -87,7 +87,7 @@ fun TopNavigation(navController: NavController) {
     }
 
     currentTitle = when (currentRoute) {
-        "guru" -> "Manajemen Guru"
+        AppRoutes.ManagementGuruScreen.route -> "Manajemen Guru"
         AppRoutes.ManagementSiswaScreen.route -> "Manajemen Siswa"
         AppRoutes.ManagementKelasScreen.route -> "Manajemen Kelas"
         AppRoutes.ManagementSubjectScreen.route-> "Manajemen Pelajaran"

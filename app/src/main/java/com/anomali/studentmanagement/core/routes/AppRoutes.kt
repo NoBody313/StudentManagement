@@ -31,7 +31,9 @@ sealed class AppRoutes(val route: String) {
     object CreateKelasScreen : AppRoutes("admin/management/kelas/create")
     object CreateSubjectScreen : AppRoutes("admin/management/subject/create")
     // Detail
-    object DetailGuruScreen : AppRoutes("admin/management/guru/detail")
+    object DetailGuruScreen : AppRoutes("admin/management/guru/detail/{teacherId}") {
+        fun teacherCreateRoute(teacherId: Int) = "admin/management/guru/detail/$teacherId"
+    }
     object DetailSiswaScreen : AppRoutes("admin/management/siswa/detail/{studentId}") {
         fun siswaCreateRoute(studentId: Int) = "admin/management/siswa/detail/$studentId"
     }

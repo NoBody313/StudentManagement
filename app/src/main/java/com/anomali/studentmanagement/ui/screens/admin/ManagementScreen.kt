@@ -58,7 +58,7 @@ fun ManagementScreen(navController: NavController) {
                 ManagementMenuItem(
                     icon = R.drawable.person,
                     text = "Guru",
-                    onClick = { /* TODO: Handle Guru click */ }
+                    onClick = { navController.navigate(AppRoutes.ManagementGuruScreen.route) }
                 )
                 ManagementMenuItem(
                     icon = R.drawable.group,
