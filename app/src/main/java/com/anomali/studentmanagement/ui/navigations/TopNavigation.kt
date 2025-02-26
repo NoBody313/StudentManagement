@@ -64,20 +64,24 @@ fun TopNavigation(navController: NavController) {
 
     fun onAddClicked(currentRoute: String?) {
         when (currentRoute) {
-            AppRoutes.ManagementGuruScreen.route -> {
-                navController.navigate(AppRoutes.CreateGuruScreen.route)
+            AppRoutes.ManagementTeacherScreen.route -> {
+                navController.navigate(AppRoutes.CreateTeacherScreen.route)
             }
 
-            AppRoutes.ManagementSiswaScreen.route -> {
+            AppRoutes.ManagementStudentScreen.route -> {
                 navController.navigate(AppRoutes.CreateStudentScreen.route)
             }
 
-            AppRoutes.ManagementKelasScreen.route -> {
-                navController.navigate(AppRoutes.CreateKelasScreen.route)
+            AppRoutes.ManagementClassScreen.route -> {
+                navController.navigate(AppRoutes.CreateClassScreen.route)
             }
 
             AppRoutes.ManagementSubjectScreen.route -> {
                 navController.navigate(AppRoutes.CreateSubjectScreen.route)
+            }
+
+            AppRoutes.ManagementScheduleScreen.route -> {
+                navController.navigate(AppRoutes.CreateScheduleScreen.route)
             }
 
             else -> {
@@ -87,9 +91,9 @@ fun TopNavigation(navController: NavController) {
     }
 
     currentTitle = when (currentRoute) {
-        AppRoutes.ManagementGuruScreen.route -> "Manajemen Guru"
-        AppRoutes.ManagementSiswaScreen.route -> "Manajemen Siswa"
-        AppRoutes.ManagementKelasScreen.route -> "Manajemen Kelas"
+        AppRoutes.ManagementTeacherScreen.route -> "Manajemen Guru"
+        AppRoutes.ManagementStudentScreen.route -> "Manajemen Siswa"
+        AppRoutes.ManagementClassScreen.route -> "Manajemen Kelas"
         AppRoutes.ManagementSubjectScreen.route-> "Manajemen Pelajaran"
         else -> "Manajemen"
     }

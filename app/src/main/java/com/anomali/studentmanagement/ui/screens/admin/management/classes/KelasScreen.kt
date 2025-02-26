@@ -102,7 +102,7 @@ fun ClassesItem(classes: Classes, navController: NavController) {
             )
         )
         EditButton(onClick = { navController.navigate(
-            AppRoutes.DetailKelasScreen.classesCreateRoute(classes.id)
+            AppRoutes.DetailClassScreen.classesCreateRoute(classes.id)
         ) })
     }
 }

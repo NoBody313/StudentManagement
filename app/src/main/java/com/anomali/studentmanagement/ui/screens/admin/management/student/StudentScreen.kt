@@ -149,7 +149,7 @@ fun StudentItem(student: StudentListResponseDTO, navController: NavController) {
         }
         EditButton(onClick = {
             navController.navigate(
-                AppRoutes.DetailSiswaScreen.siswaCreateRoute(student.id)
+                AppRoutes.DetailStudentScreen.studentCreateRoute(student.id)
             )
         })
     }

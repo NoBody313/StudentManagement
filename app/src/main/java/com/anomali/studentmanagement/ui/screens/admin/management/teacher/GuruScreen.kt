@@ -130,7 +130,7 @@ fun TeacherItem(teacher: TeacherResponseDTO, navController: NavController) {
         }
         EditButton(onClick = {
             navController.navigate(
-                AppRoutes.DetailGuruScreen.teacherCreateRoute(teacher.id)
+                AppRoutes.DetailTeacherScreen.teacherCreateRoute(teacher.id)
             )
         })
     }

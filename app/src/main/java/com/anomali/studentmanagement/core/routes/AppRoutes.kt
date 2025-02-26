@@ -21,27 +21,32 @@ sealed class AppRoutes(val route: String) {
     object AdminDashboardScreen : AppRoutes("admin/dashboard")
     // Management
     object ManagementScreen : AppRoutes("admin/management")
-    object ManagementGuruScreen : AppRoutes("admin/management/guru")
-    object ManagementSiswaScreen : AppRoutes("admin/management/siswa")
-    object ManagementKelasScreen : AppRoutes("admin/management/kelas")
+    object ManagementTeacherScreen : AppRoutes("admin/management/guru")
+    object ManagementStudentScreen : AppRoutes("admin/management/siswa")
+    object ManagementClassScreen : AppRoutes("admin/management/kelas")
     object ManagementSubjectScreen : AppRoutes("admin/management/subject")
+    object ManagementScheduleScreen : AppRoutes("admin/management/schedule")
     // Create
-    object CreateGuruScreen : AppRoutes("admin/management/guru/create")
+    object CreateTeacherScreen : AppRoutes("admin/management/guru/create")
     object CreateStudentScreen : AppRoutes("admin/management/siswa/create")
-    object CreateKelasScreen : AppRoutes("admin/management/kelas/create")
+    object CreateClassScreen : AppRoutes("admin/management/kelas/create")
     object CreateSubjectScreen : AppRoutes("admin/management/subject/create")
+    object CreateScheduleScreen : AppRoutes("admin/management/schedule/create")
     // Detail
-    object DetailGuruScreen : AppRoutes("admin/management/guru/detail/{teacherId}") {
+    object DetailTeacherScreen : AppRoutes("admin/management/guru/detail/{teacherId}") {
         fun teacherCreateRoute(teacherId: Int) = "admin/management/guru/detail/$teacherId"
     }
-    object DetailSiswaScreen : AppRoutes("admin/management/siswa/detail/{studentId}") {
-        fun siswaCreateRoute(studentId: Int) = "admin/management/siswa/detail/$studentId"
+    object DetailStudentScreen : AppRoutes("admin/management/siswa/detail/{studentId}") {
+        fun studentCreateRoute(studentId: Int) = "admin/management/siswa/detail/$studentId"
     }
-    object DetailKelasScreen : AppRoutes("admin/management/kelas/detail/{classesId}") {
+    object DetailClassScreen : AppRoutes("admin/management/kelas/detail/{classesId}") {
         fun classesCreateRoute(classesId: Int) = "admin/management/kelas/detail/$classesId"
     }
     object DetailSubjectScreen : AppRoutes("admin/management/subject/detail/{subjectId}") {
         fun subjectCreateRoute(subjectId: Int) = "admin/management/subject/detail/$subjectId"
     }
-
+    object DetailScheduleScreen : AppRoutes("admin/management/schedule/detail/{scheduleId}") {
+        fun scheduleCreateRoute(scheduleId: Int) = "admin/management/schedule/detail/$scheduleId"
+    }
+    // Edit
 }

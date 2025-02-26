@@ -58,17 +58,17 @@ fun ManagementScreen(navController: NavController) {
                 ManagementMenuItem(
                     icon = R.drawable.person,
                     text = "Guru",
-                    onClick = { navController.navigate(AppRoutes.ManagementGuruScreen.route) }
+                    onClick = { navController.navigate(AppRoutes.ManagementTeacherScreen.route) }
                 )
                 ManagementMenuItem(
                     icon = R.drawable.group,
                     text = "Siswa",
-                    onClick = { navController.navigate(AppRoutes.ManagementSiswaScreen.route) }
+                    onClick = { navController.navigate(AppRoutes.ManagementStudentScreen.route) }
                 )
                 ManagementMenuItem(
                     icon = R.drawable.school,
                     text = "Kelas",
-                    onClick = { navController.navigate(AppRoutes.ManagementKelasScreen.route) }
+                    onClick = { navController.navigate(AppRoutes.ManagementClassScreen.route) }
                 )
                 ManagementMenuItem(
                     icon = R.drawable.dictionary,

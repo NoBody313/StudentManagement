@@ -37,7 +37,7 @@ fun TopNavigationNoIcon(navController: NavController) {
     currentTitle = when (currentRoute) {
         "guru" -> "Manajemen Guru"
         AppRoutes.CreateStudentScreen.route -> "Manajemen Siswa"
-        AppRoutes.DetailSiswaScreen.route -> "Manajemen Siswa"
+        AppRoutes.DetailStudentScreen.route -> "Manajemen Siswa"
         "kelas" -> "Manajemen Kelas"
         "pelajaran" -> "Manajemen Pelajaran"
         else -> "Manajemen"

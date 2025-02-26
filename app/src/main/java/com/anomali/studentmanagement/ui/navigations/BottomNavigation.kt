@@ -37,7 +37,7 @@ fun BottomNavigation(navController: NavController, pages: Int = 0) {
             R.drawable.add_off
         ) to "Tambah Cepat",
         Triple(
-            AppRoutes.ProfileScreen,
+            AppRoutes.ManagementScheduleScreen,
             R.drawable.calendar_on,
             R.drawable.calendar_off
         ) to "Jadwal",

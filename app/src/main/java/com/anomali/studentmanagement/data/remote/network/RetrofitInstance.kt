@@ -4,6 +4,7 @@ import android.content.Context
 import com.anomali.studentmanagement.core.utils.AuthInterceptor
 import com.anomali.studentmanagement.data.remote.api.AuthService
 import com.anomali.studentmanagement.data.remote.api.ClassesService
+import com.anomali.studentmanagement.data.remote.api.ScheduleService
 import com.anomali.studentmanagement.data.remote.api.StudentService
 import com.anomali.studentmanagement.data.remote.api.SubjectService
 import com.anomali.studentmanagement.data.remote.api.TeacherService
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    private const val BASE_URL = "http://192.168.150.47:8000/"
+    private const val BASE_URL = "http://192.168.18.26:8000/"
 
     private val gson = GsonBuilder()
         .setLenient()
@@ -60,5 +61,9 @@ object RetrofitInstance {
 
     fun getTeacherService(): TeacherService {
         return retrofit.create(TeacherService::class.java)
+    }
+
+    fun getScheduleService(): ScheduleService {
+        return retrofit.create(ScheduleService::class.java)
     }
 }

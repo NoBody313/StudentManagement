@@ -14,6 +14,7 @@ import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPre
 import com.anomali.studentmanagement.data.local.database.StudentDatabase
 import com.anomali.studentmanagement.data.repository.admin.AuthRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.ClassesRepositoryImpl
+import com.anomali.studentmanagement.data.repository.admin.ScheduleRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.StudentRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.SubjectRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.TeacherRepositoryImpl
@@ -32,6 +33,9 @@ import com.anomali.studentmanagement.ui.screens.admin.management.subject.Subject
 import com.anomali.studentmanagement.ui.screens.admin.management.teacher.CreateTeacherScreen
 import com.anomali.studentmanagement.ui.screens.admin.management.teacher.DetailTeacherScreen
 import com.anomali.studentmanagement.ui.screens.admin.management.teacher.GuruScreen
+import com.anomali.studentmanagement.ui.screens.admin.schedule.CreateScheduleScreen
+import com.anomali.studentmanagement.ui.screens.admin.schedule.DetailScheduleScreen
+import com.anomali.studentmanagement.ui.screens.admin.schedule.ScheduleScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
 import com.anomali.studentmanagement.ui.screens.students.CreateEditStudentScreen
@@ -50,6 +54,7 @@ fun AppNavigation() {
     val classesRepository = ClassesRepositoryImpl(context = context)
     val subjectRepository = SubjectRepositoryImpl(context = context)
     val teacherRepository = TeacherRepositoryImpl(context = context)
+    val scheduleRepository = ScheduleRepositoryImpl(context = context)
     val studentDao = StudentDatabase.getDatabase(context).studentDao()
 
 
@@ -93,19 +98,19 @@ fun AppNavigation() {
                 navController = navController
             )
         }
-        composable(AppRoutes.ManagementGuruScreen.route) {
+        composable(AppRoutes.ManagementTeacherScreen.route) {
             GuruScreen(
                 teacherRepository = teacherRepository,
                 navController = navController
             )
         }
-        composable(AppRoutes.ManagementSiswaScreen.route) {
+        composable(AppRoutes.ManagementStudentScreen.route) {
             StudentScreen(
                 navController = navController,
                 studentRepository = studentRepository
             )
         }
-        composable(AppRoutes.ManagementKelasScreen.route) {
+        composable(AppRoutes.ManagementClassScreen.route) {
             ClassesScreen(
                 navController = navController,
                 classesRepository = classesRepository
@@ -117,6 +122,12 @@ fun AppNavigation() {
                 subjectRepository = subjectRepository
             )
         }
+        composable(AppRoutes.ManagementScheduleScreen.route) {
+             ScheduleScreen(
+                 navController = navController,
+                 scheduleRepository = scheduleRepository
+             )
+        }
 
         // Create
         composable(AppRoutes.CreateSubjectScreen.route) {
@@ -126,7 +137,7 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoutes.CreateKelasScreen.route) {
+        composable(AppRoutes.CreateClassScreen.route) {
             CreateKelasScreen(
                 navController = navController,
                 classesRepository = classesRepository
@@ -140,10 +151,20 @@ fun AppNavigation() {
                 classesRepository = classesRepository
             )
         }
-        composable(AppRoutes.CreateGuruScreen.route) {
+        composable(AppRoutes.CreateTeacherScreen.route) {
             CreateTeacherScreen(
                 navController = navController,
                 teacherRepository = teacherRepository,
+            )
+        }
+
+        composable(AppRoutes.CreateScheduleScreen.route) {
+            CreateScheduleScreen(
+                navController = navController,
+                scheduleRepository = scheduleRepository,
+                classRepository = classesRepository,
+                subjectRepository = subjectRepository,
+                teacherRepository = teacherRepository
             )
         }
 
@@ -157,7 +178,7 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoutes.DetailKelasScreen.route) {
+        composable(AppRoutes.DetailClassScreen.route) {
             val classesId = it.arguments?.getString("classesId")?.toIntOrNull() ?: 0
             DetailClassesScreen(
                 navController = navController,
@@ -166,7 +187,7 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoutes.DetailSiswaScreen.route) {
+        composable(AppRoutes.DetailStudentScreen.route) {
             val studentId = it.arguments?.getString("studentId")?.toIntOrNull() ?: 0
             DetailStudentScreen(
                 navController = navController,
@@ -176,12 +197,24 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoutes.DetailGuruScreen.route) {
+        composable(AppRoutes.DetailTeacherScreen.route) {
             val teacherId = it.arguments?.getString("teacherId")?.toIntOrNull() ?: 0
             DetailTeacherScreen(
                 navController = navController,
                 teacherRepository = teacherRepository,
                 teacherId = teacherId,
+            )
+        }
+
+        composable(AppRoutes.DetailScheduleScreen.route) {
+            val scheduleId = it.arguments?.getString("scheduleId")?.toIntOrNull() ?: 0
+            DetailScheduleScreen(
+                navController = navController,
+                scheduleRepository = scheduleRepository,
+                classRepository = classesRepository,
+                subjectRepository = subjectRepository,
+                teacherRepository = teacherRepository,
+                scheduleId = scheduleId
             )
         }
 
