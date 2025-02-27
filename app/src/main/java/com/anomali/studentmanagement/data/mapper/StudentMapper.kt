@@ -2,8 +2,6 @@ package com.anomali.studentmanagement.data.mapper
 
 import com.anomali.studentmanagement.data.model.Classes
 import com.anomali.studentmanagement.data.model.User
-import com.anomali.studentmanagement.data.model.student.Father
-import com.anomali.studentmanagement.data.model.student.Mother
 import com.anomali.studentmanagement.data.model.student.Student
 import com.anomali.studentmanagement.data.remote.dto.response.StudentResponseDTO
 
@@ -12,44 +10,11 @@ fun StudentResponseDTO.toModel(): Student {
         id = id,
         nis = nis,
         nisn = nisn,
-        dateOfBirth = dateOfBirth,
-        placeOfBirth = placeOfBirth,
-        classId = classes?.toModel() ?: Classes(0, "Unknown", "", ""),
+        date_of_birth = dateOfBirth,
+        place_of_birth = placeOfBirth,
+        class_id = classes.toModel(),
         gender = gender,
-        user = User(
-            id = user.id,
-            name = user.name,
-            email = user.email,
-            createdAt = user.createdAt,
-            updatedAt = user.updatedAt
-        ),
-        father = father.let {
-            Father(
-                id = it.id,
-                name = it.name,
-                phoneNumber = it.phoneNumber,
-                bornPlace = it.bornPlace,
-                bornDate = it.bornDate,
-                occupation = it.occupation,
-                address = it.address,
-                createdAt = it.createdAt,
-                updatedAt = it.updatedAt
-            )
-        },
-        mother = mother.let {
-            Mother(
-                id = it.id,
-                name = it.name,
-                phoneNumber = it.phoneNumber,
-                bornPlace = it.bornPlace,
-                bornDate = it.bornDate,
-                occupation = it.occupation,
-                address = it.address,
-                createdAt = it.createdAt,
-                updatedAt = it.updatedAt
-            )
-        },
-
+        user = user.toModel(),
         createdAt = createdAt,
         updatedAt = updatedAt,
     )

@@ -33,8 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.data.model.Classes
-import com.anomali.studentmanagement.data.remote.dto.request.FatherRequest
-import com.anomali.studentmanagement.data.remote.dto.request.MotherRequest
 import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
 import com.anomali.studentmanagement.data.remote.dto.request.UserRequest
 import com.anomali.studentmanagement.data.repository.admin.ClassesRepository
@@ -63,18 +61,6 @@ fun CreateStudentScreen(
     val studentDateOfBirth = remember { mutableStateOf("") }
     var studentPlaceOfBirth by remember { mutableStateOf("") }
     var studentGender by remember { mutableStateOf("") }
-    var studentFatherName by remember { mutableStateOf("") }
-    var studentFatherPhoneNumber by remember { mutableStateOf("") }
-    val studentFatherDateOfBirth = remember { mutableStateOf("") }
-    var studentFatherPlaceOfBirth by remember { mutableStateOf("") }
-    var studentFatherOccupation by remember { mutableStateOf("") }
-    var studentFatherAddress by remember { mutableStateOf("") }
-    var studentMotherName by remember { mutableStateOf("") }
-    var studentMotherPhoneNumber by remember { mutableStateOf("") }
-    val studentMotherDateOfBirth = remember { mutableStateOf("") }
-    var studentMotherPlaceOfBirth by remember { mutableStateOf("") }
-    var studentMotherOccupation by remember { mutableStateOf("") }
-    var studentMotherAddress by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -174,114 +160,6 @@ fun CreateStudentScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(text = "Data Ayah", fontWeight = FontWeight.Bold)
-
-                    LabeledInputField(
-                        title = "Nama Ayah",
-                        placeholder = "Masukkan nama ayah",
-                        value = studentFatherName,
-                        onValueChange = { studentFatherName = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Nomor Telepon Ayah",
-                        placeholder = "Masukkan nomor telepon",
-                        value = studentFatherPhoneNumber,
-                        onValueChange = { studentFatherPhoneNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        isPasswordTextField = false
-                    )
-
-                    DatePickerField(
-                        label = "Tanggal Lahir Ayah",
-                        selectedDate = studentFatherDateOfBirth,
-                    )
-
-                    LabeledInputField(
-                        title = "Tempat Lahir Ayah",
-                        placeholder = "Masukkan tempat lahir ayah",
-                        value = studentFatherPlaceOfBirth,
-                        onValueChange = { studentFatherPlaceOfBirth = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Pekerjaan Ayah",
-                        placeholder = "Masukkan pekerjaan ayah",
-                        value = studentFatherOccupation,
-                        onValueChange = { studentFatherOccupation = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Alamat Ayah",
-                        placeholder = "Masukkan alamat ayah",
-                        value = studentFatherAddress,
-                        onValueChange = { studentFatherAddress = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(text = "Data Ibu", fontWeight = FontWeight.Bold)
-
-                    LabeledInputField(
-                        title = "Nama Ibu",
-                        placeholder = "Masukkan nama ibu",
-                        value = studentMotherName,
-                        onValueChange = { studentMotherName = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Nomor Telepon Ibu",
-                        placeholder = "Masukkan nomor telepon",
-                        value = studentMotherPhoneNumber,
-                        onValueChange = { studentMotherPhoneNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        isPasswordTextField = false
-                    )
-
-                    DatePickerField(
-                        label = "Tanggal Lahir Ibu",
-                        selectedDate = studentMotherDateOfBirth,
-                    )
-
-                    LabeledInputField(
-                        title = "Tempat Lahir Ibu",
-                        placeholder = "Masukkan tempat lahir ibu",
-                        value = studentMotherPlaceOfBirth,
-                        onValueChange = { studentMotherPlaceOfBirth = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Pekerjaan Ibu",
-                        placeholder = "Masukkan pekerjaan ibu",
-                        value = studentMotherOccupation,
-                        onValueChange = { studentMotherOccupation = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Alamat Ibu",
-                        placeholder = "Masukkan alamat ibu",
-                        value = studentMotherAddress,
-                        onValueChange = { studentMotherAddress = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     Text(text = "Informasi Akun", fontWeight = FontWeight.Bold)
 
                     LabeledInputField(
@@ -324,8 +202,6 @@ fun CreateStudentScreen(
                         if (studentDateOfBirth.value.isEmpty()) missingFields.add("Tanggal Lahir")
                         if (studentPlaceOfBirth.isEmpty()) missingFields.add("Tempat Lahir")
                         if (studentGender.isEmpty()) missingFields.add("Jenis Kelamin")
-                        if (studentFatherName.isEmpty()) missingFields.add("Nama Ayah")
-                        if (studentMotherName.isEmpty()) missingFields.add("Nama Ibu")
                         if (email.isEmpty()) missingFields.add("Email")
                         if (password.isEmpty()) missingFields.add("Password")
                         if (confirmPassword.isEmpty()) missingFields.add("Konfirmasi Password")
@@ -334,6 +210,7 @@ fun CreateStudentScreen(
                             return@launch
                         }
 
+                        Log.d("Missing Fields", missingFields.toString())
                         if (missingFields.isNotEmpty()) {
                             Log.e(
                                 "Validation",
@@ -360,22 +237,6 @@ fun CreateStudentScreen(
                                 dateOfBirth = studentDateOfBirth.value,
                                 placeOfBirth = studentPlaceOfBirth,
                                 gender = studentGender,
-                                father = FatherRequest(
-                                    name = studentFatherName,
-                                    phoneNumber = studentFatherPhoneNumber,
-                                    bornPlace = studentFatherPlaceOfBirth,
-                                    bornDate = studentFatherDateOfBirth.value,
-                                    occupation = studentFatherOccupation,
-                                    address = studentFatherAddress
-                                ),
-                                mother = MotherRequest(
-                                    name = studentMotherName,
-                                    phoneNumber = studentMotherPhoneNumber,
-                                    bornPlace = studentMotherPlaceOfBirth,
-                                    bornDate = studentMotherDateOfBirth.value,
-                                    occupation = studentMotherOccupation,
-                                    address = studentMotherAddress
-                                ),
                                 user = UserRequest(
                                     name = studentName,
                                     email = email,
@@ -384,7 +245,7 @@ fun CreateStudentScreen(
                             )
 
                             val response = studentRepository.createStudent(student)
-
+                            Log.d("Response", response.toString())
                             if (response.isSuccessful) {
                                 Toast.makeText(
                                     context,
@@ -399,6 +260,7 @@ fun CreateStudentScreen(
                                     "Gagal menambahkan siswa: $errorMessage",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                Log.e("Error", errorMessage)
                             }
                             Log.d("Request Data", student.toString())
                             Log.d("Request JSON", Gson().toJson(student))

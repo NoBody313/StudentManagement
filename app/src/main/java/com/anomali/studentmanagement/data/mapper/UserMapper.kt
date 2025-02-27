@@ -8,6 +8,7 @@ fun UserDTO.toModel(): User {
         id = id,
         name = name,
         email = email,
+        role = role,
         createdAt = createdAt,
         updatedAt = updatedAt
     )

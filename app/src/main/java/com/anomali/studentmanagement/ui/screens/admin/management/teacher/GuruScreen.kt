@@ -110,7 +110,7 @@ fun TeacherItem(teacher: TeacherResponseDTO, navController: NavController) {
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = teacher.userId.toString(),
+                    text = teacher.user.name,
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight(500),

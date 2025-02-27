@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.admin.schedule
+package com.anomali.studentmanagement.ui.screens.students
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -29,25 +29,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.anomali.studentmanagement.core.routes.AppRoutes
-import com.anomali.studentmanagement.data.remote.dto.response.ScheduleDTO
-import com.anomali.studentmanagement.data.repository.admin.ScheduleRepository
-import com.anomali.studentmanagement.ui.components.EditButton
+import com.anomali.studentmanagement.data.remote.dto.response.student.ScheduleDataResponseDTO
+import com.anomali.studentmanagement.data.repository.student.StudentAcademicRepository
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
 
 @Composable
-fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRepository) {
+fun StudentScheduleScreen(navController: NavController, studentAcademicRepository: StudentAcademicRepository) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var schedule by remember { mutableStateOf<List<ScheduleDTO>>(emptyList()) }
+    var schedule by remember { mutableStateOf<List<ScheduleDataResponseDTO>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         isLoading = true
         try {
-            val response = scheduleRepository.getSchedules()
+            val response = studentAcademicRepository.getStudentScheduleData()
             if (response.isSuccessful) {
-                schedule = response.body()?.schedule ?: emptyList()
+                schedule = response.body()?.schedules ?: emptyList()
             } else {
                 Log.e("ScheduleScreen", "Error: ${response.message()}")
                 errorMessage = "Error: ${response.message()}"
@@ -81,7 +79,7 @@ fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRep
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(schedule.size) { index ->
-                        ScheduleItem(schedule[index], navController)
+                        ScheduleItem(schedule[index])
                     }
                 }
             }
@@ -90,7 +88,7 @@ fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRep
 }
 
 @Composable
-fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
+fun ScheduleItem(scheduleDataResponseDTO: ScheduleDataResponseDTO) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -101,7 +99,7 @@ fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = schedule.subject.name,
+                text = scheduleDataResponseDTO.subject.name,
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight(500),
@@ -115,7 +113,7 @@ fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = schedule.teacher.user.name,
+                    text = scheduleDataResponseDTO.teacher.user.name,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(500),
@@ -124,7 +122,7 @@ fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
                     )
                 )
                 Text(
-                    text = schedule.classes.name,
+                    text = scheduleDataResponseDTO.classes.name,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(400),
@@ -133,10 +131,5 @@ fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
                 )
             }
         }
-        EditButton(onClick = {
-            navController.navigate(
-                AppRoutes.DetailScheduleScreen.scheduleCreateRoute(schedule.id)
-            )
-        })
     }
 }

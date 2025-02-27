@@ -1,7 +1,13 @@
 package com.anomali.studentmanagement.ui.navigations
 
 //import com.anomali.studentmanagement.ui.screens.favorites.FavoriteListScreen
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,12 +18,13 @@ import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.core.utils.PreferencesUtils.getTokenFromPreferences
 import com.anomali.studentmanagement.data.local.database.StudentDatabase
-import com.anomali.studentmanagement.data.repository.admin.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.ClassesRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.ScheduleRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.StudentRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.SubjectRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.TeacherRepositoryImpl
+import com.anomali.studentmanagement.data.repository.teacher.AttendanceRepositoryImpl
 import com.anomali.studentmanagement.data.repository.teacher.GradeRepositoryImpl
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
 import com.anomali.studentmanagement.ui.screens.admin.DashboardScreen
@@ -39,8 +46,11 @@ import com.anomali.studentmanagement.ui.screens.admin.schedule.DetailScheduleScr
 import com.anomali.studentmanagement.ui.screens.admin.schedule.ScheduleScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
-import com.anomali.studentmanagement.ui.screens.students.CreateEditStudentScreen
+import com.anomali.studentmanagement.ui.screens.draft.CreateEditStudentScreen
+import com.anomali.studentmanagement.ui.screens.students.StudentDashboardScreen
 import com.anomali.studentmanagement.ui.screens.teacher.TeacherDashboardScreen
+import com.anomali.studentmanagement.ui.screens.teacher.attendance.AttendanceCreateScreen
+import com.anomali.studentmanagement.ui.screens.teacher.attendance.AttendanceScreen
 import com.anomali.studentmanagement.ui.screens.teacher.grade.GradeCreateScreen
 import com.anomali.studentmanagement.ui.screens.teacher.grade.GradeScreen
 
@@ -60,12 +70,20 @@ fun AppNavigation() {
     val teacherRepository = TeacherRepositoryImpl(context = context)
     val scheduleRepository = ScheduleRepositoryImpl(context = context)
     val gradeRepository = GradeRepositoryImpl(context = context)
+    val attendanceRepository = AttendanceRepositoryImpl(context = context)
     val studentDao = StudentDatabase.getDatabase(context).studentDao()
 
+    val role = PreferencesUtils.getUserRoleFromPreferences(context)
+    val startDestination = when (role) {
+        "admin" -> AppRoutes.AdminDashboardScreen.route
+        "guru" -> AppRoutes.TeacherDashboardScreen.route
+        "siswa" -> AppRoutes.StudentDashboardScreen.route
+        else -> AppRoutes.LoginScreen.route
+    }
 
     NavHost(
         navController,
-        startDestination = if (token.isNotEmpty()) AppRoutes.TeacherDashboardScreen.route else AppRoutes.LoginScreen.route
+        startDestination = startDestination
     ) {
         composable(AppRoutes.LoginScreen.route) {
             LoginScreen(
@@ -83,9 +101,20 @@ fun AppNavigation() {
                 authRepository = AuthRepositoryImpl(context)
             )
         }
+
         composable(AppRoutes.LogoutScreen.route) {
-            PreferencesUtils.clearTokenFromPreferences(context)
-            navController.navigate(AppRoutes.LoginScreen.route)
+            LaunchedEffect(Unit) {
+                PreferencesUtils.clearTokenFromPreferences(context)
+                navController.navigate(AppRoutes.LoginScreen.route) {
+                    popUpTo(0) { inclusive = true }
+                }
+            }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
 
         // Admin
@@ -298,6 +327,32 @@ fun AppNavigation() {
                 subjectRepository = subjectRepository,
                 teacherRepository = teacherRepository,
                 gradeRepository = gradeRepository
+            )
+        }
+
+        composable(AppRoutes.AttendanceScreen.route) {
+            AttendanceScreen(
+                navController = navController,
+                attendanceRepository = attendanceRepository
+            )
+        }
+
+        composable(AppRoutes.AttendanceCreateScreen.route) {
+            AttendanceCreateScreen(
+                navController = navController,
+                attendanceRepository = attendanceRepository,
+                studentRepository = studentRepository,
+                scheduleRepository = scheduleRepository,
+            )
+        }
+
+        // Student
+        composable(AppRoutes.StudentDashboardScreen.route) {
+            StudentDashboardScreen(
+                navController = navController,
+                authRepository = authRepository,
+                context = context,
+                token = token
             )
         }
     }

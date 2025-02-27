@@ -57,8 +57,10 @@ class StudentRepositoryImpl @Inject constructor(
     override suspend fun createStudent(request: StudentRequest): Response<StudentCreateResponse> {
         val response = studentService.createStudent(request)
         return if (response.isSuccessful) {
+            Log.d("CreateStudent", "Response: ${response.body()}")
             Response.success(response.body())
         } else {
+            Log.e("CreateStudent", "Error: ${response.code()} - ${response.errorBody()}")
             Response.error(response.code(), response.errorBody() ?: "".toResponseBody(null))
         }
     }

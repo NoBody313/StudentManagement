@@ -4,16 +4,14 @@ import com.anomali.studentmanagement.data.model.Classes
 import com.anomali.studentmanagement.data.model.User
 
 data class Student(
-    val id: Int,
+    val id: Int?,
     val nis: String,
     val nisn: String,
-    val dateOfBirth: String,
-    val placeOfBirth: String,
+    val date_of_birth: String,
+    val place_of_birth: String,
     val gender: String,
-    val classId: Classes,
+    val class_id: Classes,
     val user: User,
-    val father: Father,
-    val mother: Mother,
     val createdAt: String,
     val updatedAt: String,
 )

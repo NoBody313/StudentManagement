@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.core.routes.AppRoutes
-import com.anomali.studentmanagement.data.repository.admin.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -107,10 +107,19 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
                         GlobalScope.launch {
                             try {
                                 val loginResponse = authRepository.login(email, password)
+                                val user = authRepository.getUserData(loginResponse.token)
                                 withContext(Dispatchers.Main) {
                                     isLoading = false
                                     Log.d("LoginScreen", "JWT Token: ${loginResponse.token}")
-                                    onLoginSuccess()
+
+                                    when (user?.role) {
+                                        "admin" -> navController.navigate(AppRoutes.AdminDashboardScreen.route)
+                                        "guru" -> navController.navigate(AppRoutes.TeacherDashboardScreen.route)
+                                        "siswa" -> navController.navigate(AppRoutes.StudentDashboardScreen.route)
+                                        else -> {
+                                            errorMessage = "Role tidak dikenali"
+                                        }
+                                    }
                                 }
                             } catch (e: Exception) {
                                 withContext(Dispatchers.Main) {
@@ -132,7 +141,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .clickable {
-                        navController.navigate(AppRoutes.TeacherDashboardScreen.route)
+                        navController.navigate(AppRoutes.AdminDashboardScreen.route)
                     },
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center

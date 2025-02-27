@@ -54,5 +54,9 @@ sealed class AppRoutes(val route: String) {
     object TeacherProfileScreen : AppRoutes("teacher/profile")
     object GradeScreen : AppRoutes("teacher/grade")
     object GradeCreateScreen : AppRoutes("teacher/grade/create")
+    object AttendanceScreen : AppRoutes("teacher/attendance")
+    object AttendanceCreateScreen : AppRoutes("teacher/attendance/create")
 
+    // Student
+    object StudentDashboardScreen : AppRoutes("student/dashboard")
 }

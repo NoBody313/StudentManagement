@@ -1,6 +1,5 @@
-package com.anomali.studentmanagement.ui.screens.admin.schedule
+package com.anomali.studentmanagement.ui.screens.students
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,35 +24,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.anomali.studentmanagement.core.routes.AppRoutes
-import com.anomali.studentmanagement.data.remote.dto.response.ScheduleDTO
-import com.anomali.studentmanagement.data.repository.admin.ScheduleRepository
-import com.anomali.studentmanagement.ui.components.EditButton
+import com.anomali.studentmanagement.data.remote.dto.response.student.GradeDataResponseDTO
+import com.anomali.studentmanagement.data.repository.student.StudentAcademicRepository
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
 
 @Composable
-fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRepository) {
+fun StudentGradeScreen(navController: NavController, studentAcademicRepository: StudentAcademicRepository) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var schedule by remember { mutableStateOf<List<ScheduleDTO>>(emptyList()) }
+    var grades by remember { mutableStateOf<List<GradeDataResponseDTO>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         isLoading = true
         try {
-            val response = scheduleRepository.getSchedules()
+            val response = studentAcademicRepository.getStudentGradeData()
             if (response.isSuccessful) {
-                schedule = response.body()?.schedule ?: emptyList()
+                grades = response.body()?.gradesData ?: emptyList()
             } else {
-                Log.e("ScheduleScreen", "Error: ${response.message()}")
                 errorMessage = "Error: ${response.message()}"
             }
         } catch (e: Exception) {
-            Log.e("ScheduleScreen", "Exception: ${e.message}")
             errorMessage = "Error: ${e.message}"
         } finally {
             isLoading = false
@@ -73,15 +67,17 @@ fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRep
         ) {
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            } else if (errorMessage != null) {
-                Text(text = errorMessage ?: "Unknown error occurred")
+            } else if (!errorMessage.isNullOrEmpty()) {
+                Text(text = errorMessage ?: "Unknown error occurred", color = Color.Red)
+            } else if (grades.isEmpty()) {
+                Text(text = "Tidak ada data nilai.", color = Color.Gray)
             } else {
                 LazyColumn(
                     contentPadding = PaddingValues(vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(schedule.size) { index ->
-                        ScheduleItem(schedule[index], navController)
+                    items(grades.size) { grade ->
+                        GradeItem(grades[grade])
                     }
                 }
             }
@@ -89,42 +85,40 @@ fun ScheduleScreen(navController: NavController, scheduleRepository: ScheduleRep
     }
 }
 
+
 @Composable
-fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
+fun GradeItem(gradeDataResponseDTO: GradeDataResponseDTO) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = schedule.subject.name,
+                text = gradeDataResponseDTO.student.user.name,
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight(500),
                     color = Color(0xFF000000),
-                    textAlign = TextAlign.Center,
                 )
             )
-
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = schedule.teacher.user.name,
+                    text = gradeDataResponseDTO.subject.name,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(500),
                         color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
                     )
                 )
                 Text(
-                    text = schedule.classes.name,
+                    text = "Nilai: ${gradeDataResponseDTO.score}",
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight(400),
@@ -133,10 +127,5 @@ fun ScheduleItem(schedule: ScheduleDTO, navController: NavController) {
                 )
             }
         }
-        EditButton(onClick = {
-            navController.navigate(
-                AppRoutes.DetailScheduleScreen.scheduleCreateRoute(schedule.id)
-            )
-        })
     }
 }

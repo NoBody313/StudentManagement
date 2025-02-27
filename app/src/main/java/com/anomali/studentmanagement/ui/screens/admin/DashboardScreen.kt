@@ -34,8 +34,8 @@ import com.anomali.studentmanagement.R
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.data.model.User
-import com.anomali.studentmanagement.data.repository.admin.AuthRepository
-import com.anomali.studentmanagement.data.repository.admin.AuthRepositoryImpl
+import com.anomali.studentmanagement.data.repository.auth.AuthRepository
+import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 
 @Composable
@@ -78,7 +78,7 @@ fun DashboardScreen(
     ?: "Pengguna tidak ditemukan"
 
     Scaffold(
-        bottomBar = { BottomNavigation(navController, 0) }
+        bottomBar = { BottomNavigation(navController) }
     ) { paddingValues ->
         Column(
             verticalArrangement = Arrangement.spacedBy(42.dp, Alignment.CenterVertically),

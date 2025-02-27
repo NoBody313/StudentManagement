@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.students
+package com.anomali.studentmanagement.ui.screens.draft
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

@@ -88,6 +88,10 @@ fun TopNavigation(navController: NavController) {
                 navController.navigate(AppRoutes.GradeCreateScreen.route)
             }
 
+            AppRoutes.AttendanceScreen.route -> {
+                navController.navigate(AppRoutes.AttendanceCreateScreen.route)
+            }
+
             else -> {
                 println("Menambah...")
             }

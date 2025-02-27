@@ -31,7 +31,7 @@ import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 @Composable
 fun ManagementScreen(navController: NavController) {
     Scaffold(
-        bottomBar = { BottomNavigation(navController, 1) }
+        bottomBar = { BottomNavigation(navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier

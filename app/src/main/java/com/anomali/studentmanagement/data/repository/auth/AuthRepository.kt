@@ -1,6 +1,7 @@
-package com.anomali.studentmanagement.data.repository.admin
+package com.anomali.studentmanagement.data.repository.auth
 
 import android.content.Context
+import android.util.Log
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.User
@@ -24,6 +25,7 @@ class AuthRepositoryImpl(
     init {
         RetrofitInstance.initRetrofit(context)
     }
+
     private val authService = RetrofitInstance.getAuthService()
 
     override suspend fun register(
@@ -88,20 +90,18 @@ class AuthRepositoryImpl(
     override suspend fun logout(token: String) {
         withContext(Dispatchers.IO) {
             try {
+                PreferencesUtils.clearTokenFromPreferences(context)
+
                 val response = authService.logout("Bearer $token")
-                if (response.isSuccessful) {
-                    PreferencesUtils.clearTokenFromPreferences(context)
-                    println("Logout berhasil. Token telah dihapus.")
-                    val clearedToken = PreferencesUtils.getTokenFromPreferences(context)
-                    println("Token setelah logout: $clearedToken")
-                } else {
-                    println("Logout gagal: ${response.message()}")
+                if (!response.isSuccessful) {
+                    throw Exception("Logout gagal: ${response.code()} - ${response.message()}")
                 }
             } catch (e: Exception) {
-                println("Error during logout: ${e.message}")
+                throw Exception("Error saat logout: ${e.localizedMessage}")
             }
         }
     }
+
 
     class UnauthorizedException : Exception("Token expired or unauthorized access")
 }

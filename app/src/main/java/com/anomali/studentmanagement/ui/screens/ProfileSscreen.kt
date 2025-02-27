@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.anomali.studentmanagement.data.model.User
-import com.anomali.studentmanagement.data.repository.admin.AuthRepository
+import com.anomali.studentmanagement.data.repository.auth.AuthRepository
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import kotlinx.coroutines.launch
 
@@ -36,7 +36,7 @@ fun ProfileScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        bottomBar = { BottomNavigation(navController, 2) }
+        bottomBar = { BottomNavigation(navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier

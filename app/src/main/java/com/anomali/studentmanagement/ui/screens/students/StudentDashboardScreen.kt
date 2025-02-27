@@ -1,4 +1,4 @@
-package com.anomali.studentmanagement.ui.screens.teacher
+package com.anomali.studentmanagement.ui.screens.students
 
 import android.content.Context
 import android.widget.Toast
@@ -36,7 +36,7 @@ import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 
 @Composable
-fun TeacherDashboardScreen(
+fun StudentDashboardScreen(
     navController: NavController,
     authRepository: AuthRepository,
     token: String,

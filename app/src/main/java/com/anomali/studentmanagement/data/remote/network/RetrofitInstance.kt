@@ -8,6 +8,8 @@ import com.anomali.studentmanagement.data.remote.api.ScheduleService
 import com.anomali.studentmanagement.data.remote.api.StudentService
 import com.anomali.studentmanagement.data.remote.api.SubjectService
 import com.anomali.studentmanagement.data.remote.api.TeacherService
+import com.anomali.studentmanagement.data.remote.api.student.StudentAcademicService
+import com.anomali.studentmanagement.data.remote.api.teacher.AttendanceService
 import com.anomali.studentmanagement.data.remote.api.teacher.GradeService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
     private const val BASE_URL = "http://192.168.18.26:8000/"
+//    private const val BASE_URL = "http://192.168.150.47:8000/"
 
     private val gson = GsonBuilder()
         .setLenient()
@@ -70,5 +73,13 @@ object RetrofitInstance {
 
     fun getGradeService(): GradeService {
         return retrofit.create(GradeService::class.java)
+    }
+
+    fun getAttendanceService(): AttendanceService {
+        return retrofit.create(AttendanceService::class.java)
+    }
+
+    fun getStudentAcademeService(): StudentAcademicService {
+        return retrofit.create(StudentAcademicService::class.java)
     }
 }

@@ -33,7 +33,7 @@ import com.anomali.studentmanagement.data.repository.admin.SubjectRepository
 import com.anomali.studentmanagement.data.repository.admin.TeacherRepository
 import com.anomali.studentmanagement.data.repository.teacher.GradeRepository
 import com.anomali.studentmanagement.ui.components.EditButton
-import com.anomali.studentmanagement.ui.navigations.TeacherBottomNavigation
+import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
 
 @Composable
@@ -60,7 +60,7 @@ fun GradeScreen(navController: NavController, gradeRepository: GradeRepository, 
 
     Scaffold(
         topBar = { TopNavigation(navController) },
-        bottomBar = { TeacherBottomNavigation(navController, 3) },
+        bottomBar = { BottomNavigation(navController) },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     ) { paddingValues ->
         Column(

@@ -3,37 +3,17 @@ package com.anomali.studentmanagement.data.remote.dto.request
 import com.google.gson.annotations.SerializedName
 
 data class StudentRequest(
-    val nis: String,
-    val nisn: String,
+    @SerializedName("nis") val nis: String,
+    @SerializedName("nisn") val nisn: String,
     @SerializedName("class_id") val classId: Int,
-    val dateOfBirth: String,
-    val placeOfBirth: String,
-    val gender: String,
-    val father: FatherRequest,
-    val mother: MotherRequest,
-    val user: UserRequest
-)
-
-data class FatherRequest(
-    val name: String,
-    val phoneNumber: String,
-    val bornPlace: String,
-    val bornDate: String,
-    val occupation: String,
-    val address: String
-)
-
-data class MotherRequest(
-    val name: String,
-    val phoneNumber: String,
-    val bornPlace: String,
-    val bornDate: String,
-    val occupation: String,
-    val address: String
+    @SerializedName("date_of_birth") val dateOfBirth: String,
+    @SerializedName("place_of_birth") val placeOfBirth: String,
+    @SerializedName("gender") val gender: String,
+    @SerializedName("user") val user: UserRequest
 )
 
 data class UserRequest(
-    val name: String,
-    val email: String,
-    val password: String
+    @SerializedName("name") val name: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String
 )

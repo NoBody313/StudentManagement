@@ -28,6 +28,7 @@ fun ScheduleDTO.toModel(): Schedule {
                 name = teacher.user.name,
                 email = teacher.user.email,
                 createdAt = teacher.user.createdAt,
+                role = teacher.user.role,
                 updatedAt = teacher.user.updatedAt
             )
         ),

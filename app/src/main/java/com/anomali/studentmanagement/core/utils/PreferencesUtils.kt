@@ -44,4 +44,8 @@ object PreferencesUtils {
         sharedPreferences.edit().putString(KEY_USER, userJson).apply()
     }
 
+    fun getUserRoleFromPreferences(context: Context): String {
+        val user = getUserFromPreferences(context)
+        return user?.role ?: "siswa"
+    }
 }

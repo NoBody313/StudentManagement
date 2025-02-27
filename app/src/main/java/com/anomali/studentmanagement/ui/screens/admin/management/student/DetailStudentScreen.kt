@@ -41,8 +41,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.data.model.Classes
 import com.anomali.studentmanagement.data.model.student.Student
-import com.anomali.studentmanagement.data.remote.dto.request.FatherRequest
-import com.anomali.studentmanagement.data.remote.dto.request.MotherRequest
 import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
 import com.anomali.studentmanagement.data.remote.dto.request.UserRequest
 import com.anomali.studentmanagement.data.repository.admin.ClassesRepository
@@ -106,24 +104,24 @@ fun DetailStudentScreen(
                     studentName = it.user.name
                     studentNIS = it.nis
                     studentNISN = it.nisn
-                    studentDateOfBirth.value = it.dateOfBirth
-                    studentPlaceOfBirth = it.placeOfBirth
+                    studentDateOfBirth.value = it.date_of_birth
+                    studentPlaceOfBirth = it.place_of_birth
                     studentGender = it.gender
-                    studentFatherName = it.father.name
-                    studentFatherPhoneNumber = it.father.phoneNumber
-                    studentFatherDateOfBirth.value = it.father.bornDate
-                    studentFatherPlaceOfBirth = it.father.bornPlace
-                    studentFatherOccupation = it.father.occupation
-                    studentFatherAddress = it.father.address
-                    studentMotherName = it.mother.name
-                    studentMotherPhoneNumber = it.mother.phoneNumber
-                    studentMotherDateOfBirth.value = it.mother.bornDate
-                    studentMotherPlaceOfBirth = it.mother.bornPlace
-                    studentMotherOccupation = it.mother.occupation
-                    studentMotherAddress = it.mother.address
+//                    studentFatherName = it.father.name
+//                    studentFatherPhoneNumber = it.father.phoneNumber
+//                    studentFatherDateOfBirth.value = it.father.bornDate
+//                    studentFatherPlaceOfBirth = it.father.bornPlace
+//                    studentFatherOccupation = it.father.occupation
+//                    studentFatherAddress = it.father.address
+//                    studentMotherName = it.mother.name
+//                    studentMotherPhoneNumber = it.mother.phoneNumber
+//                    studentMotherDateOfBirth.value = it.mother.bornDate
+//                    studentMotherPlaceOfBirth = it.mother.bornPlace
+//                    studentMotherOccupation = it.mother.occupation
+//                    studentMotherAddress = it.mother.address
                     email = it.user.email
                 }
-                selectedClass.value = student?.classId?.id
+                selectedClass.value = student?.class_id?.id
             } else {
                 Log.e("StudentData", "Error: ${studentResponse.message()}")
                 Toast.makeText(context, "Error: ${studentResponse.message()}", Toast.LENGTH_SHORT)
@@ -216,114 +214,114 @@ fun DetailStudentScreen(
                         isPasswordTextField = false
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(text = "Data Ayah", fontWeight = FontWeight.Bold)
-
-                    LabeledInputField(
-                        title = "Nama Ayah",
-                        placeholder = "Masukkan nama ayah",
-                        value = studentFatherName,
-                        onValueChange = { studentFatherName = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Nomor Telepon Ayah",
-                        placeholder = "Masukkan nomor telepon",
-                        value = studentFatherPhoneNumber,
-                        onValueChange = { studentFatherPhoneNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        isPasswordTextField = false
-                    )
-
-                    DatePickerField(
-                        label = "Tanggal Lahir Ayah",
-                        selectedDate = studentFatherDateOfBirth,
-                    )
-
-                    LabeledInputField(
-                        title = "Tempat Lahir Ayah",
-                        placeholder = "Masukkan tempat lahir ayah",
-                        value = studentFatherPlaceOfBirth,
-                        onValueChange = { studentFatherPlaceOfBirth = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Pekerjaan Ayah",
-                        placeholder = "Masukkan pekerjaan ayah",
-                        value = studentFatherOccupation,
-                        onValueChange = { studentFatherOccupation = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Alamat Ayah",
-                        placeholder = "Masukkan alamat ayah",
-                        value = studentFatherAddress,
-                        onValueChange = { studentFatherAddress = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(text = "Data Ibu", fontWeight = FontWeight.Bold)
-
-                    LabeledInputField(
-                        title = "Nama Ibu",
-                        placeholder = "Masukkan nama ibu",
-                        value = studentMotherName,
-                        onValueChange = { studentMotherName = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Nomor Telepon Ibu",
-                        placeholder = "Masukkan nomor telepon",
-                        value = studentMotherPhoneNumber,
-                        onValueChange = { studentMotherPhoneNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        isPasswordTextField = false
-                    )
-
-                    DatePickerField(
-                        label = "Tanggal Lahir Ibu",
-                        selectedDate = studentMotherDateOfBirth,
-                    )
-
-                    LabeledInputField(
-                        title = "Tempat Lahir Ibu",
-                        placeholder = "Masukkan tempat lahir ibu",
-                        value = studentMotherPlaceOfBirth,
-                        onValueChange = { studentMotherPlaceOfBirth = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Pekerjaan Ibu",
-                        placeholder = "Masukkan pekerjaan ibu",
-                        value = studentMotherOccupation,
-                        onValueChange = { studentMotherOccupation = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
-                    LabeledInputField(
-                        title = "Alamat Ibu",
-                        placeholder = "Masukkan alamat ibu",
-                        value = studentMotherAddress,
-                        onValueChange = { studentMotherAddress = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
-                    )
-
+//                    Spacer(modifier = Modifier.height(16.dp))
+//
+//                    Text(text = "Data Ayah", fontWeight = FontWeight.Bold)
+//
+//                    LabeledInputField(
+//                        title = "Nama Ayah",
+//                        placeholder = "Masukkan nama ayah",
+//                        value = studentFatherName,
+//                        onValueChange = { studentFatherName = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Nomor Telepon Ayah",
+//                        placeholder = "Masukkan nomor telepon",
+//                        value = studentFatherPhoneNumber,
+//                        onValueChange = { studentFatherPhoneNumber = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    DatePickerField(
+//                        label = "Tanggal Lahir Ayah",
+//                        selectedDate = studentFatherDateOfBirth,
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Tempat Lahir Ayah",
+//                        placeholder = "Masukkan tempat lahir ayah",
+//                        value = studentFatherPlaceOfBirth,
+//                        onValueChange = { studentFatherPlaceOfBirth = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Pekerjaan Ayah",
+//                        placeholder = "Masukkan pekerjaan ayah",
+//                        value = studentFatherOccupation,
+//                        onValueChange = { studentFatherOccupation = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Alamat Ayah",
+//                        placeholder = "Masukkan alamat ayah",
+//                        value = studentFatherAddress,
+//                        onValueChange = { studentFatherAddress = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(16.dp))
+//
+//                    Text(text = "Data Ibu", fontWeight = FontWeight.Bold)
+//
+//                    LabeledInputField(
+//                        title = "Nama Ibu",
+//                        placeholder = "Masukkan nama ibu",
+//                        value = studentMotherName,
+//                        onValueChange = { studentMotherName = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Nomor Telepon Ibu",
+//                        placeholder = "Masukkan nomor telepon",
+//                        value = studentMotherPhoneNumber,
+//                        onValueChange = { studentMotherPhoneNumber = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    DatePickerField(
+//                        label = "Tanggal Lahir Ibu",
+//                        selectedDate = studentMotherDateOfBirth,
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Tempat Lahir Ibu",
+//                        placeholder = "Masukkan tempat lahir ibu",
+//                        value = studentMotherPlaceOfBirth,
+//                        onValueChange = { studentMotherPlaceOfBirth = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Pekerjaan Ibu",
+//                        placeholder = "Masukkan pekerjaan ibu",
+//                        value = studentMotherOccupation,
+//                        onValueChange = { studentMotherOccupation = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
+//                    LabeledInputField(
+//                        title = "Alamat Ibu",
+//                        placeholder = "Masukkan alamat ibu",
+//                        value = studentMotherAddress,
+//                        onValueChange = { studentMotherAddress = it },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                        isPasswordTextField = false
+//                    )
+//
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(text = "Informasi Akun", fontWeight = FontWeight.Bold)
@@ -414,22 +412,22 @@ fun DetailStudentScreen(
                                             dateOfBirth = studentDateOfBirth.value,
                                             placeOfBirth = studentPlaceOfBirth,
                                             gender = studentGender,
-                                            father = FatherRequest(
-                                                name = studentFatherName,
-                                                phoneNumber = studentFatherPhoneNumber,
-                                                bornDate = studentFatherDateOfBirth.value,
-                                                bornPlace = studentFatherPlaceOfBirth,
-                                                occupation = studentFatherOccupation,
-                                                address = studentFatherAddress
-                                            ),
-                                            mother = MotherRequest(
-                                                name = studentMotherName,
-                                                phoneNumber = studentMotherPhoneNumber,
-                                                bornDate = studentMotherDateOfBirth.value,
-                                                bornPlace = studentMotherPlaceOfBirth,
-                                                occupation = studentMotherOccupation,
-                                                address = studentMotherAddress
-                                            ),
+//                                            father = FatherRequest(
+//                                                name = studentFatherName,
+//                                                phoneNumber = studentFatherPhoneNumber,
+//                                                bornDate = studentFatherDateOfBirth.value,
+//                                                bornPlace = studentFatherPlaceOfBirth,
+//                                                occupation = studentFatherOccupation,
+//                                                address = studentFatherAddress
+//                                            ),
+//                                            mother = MotherRequest(
+//                                                name = studentMotherName,
+//                                                phoneNumber = studentMotherPhoneNumber,
+//                                                bornDate = studentMotherDateOfBirth.value,
+//                                                bornPlace = studentMotherPlaceOfBirth,
+//                                                occupation = studentMotherOccupation,
+//                                                address = studentMotherAddress
+//                                            ),
                                             user = UserRequest(
                                                 name = studentName,
                                                 email = email,
