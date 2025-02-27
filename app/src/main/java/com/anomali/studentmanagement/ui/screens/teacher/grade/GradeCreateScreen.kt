@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+package com.anomali.studentmanagement.ui.screens.teacher.grade
 
-package com.anomali.studentmanagement.ui.screens.admin.schedule
-
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -33,50 +29,54 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.anomali.studentmanagement.data.model.Classes
 import com.anomali.studentmanagement.data.model.Subject
 import com.anomali.studentmanagement.data.remote.dto.request.ScheduleRequest
+import com.anomali.studentmanagement.data.remote.dto.request.teacher.GradeRequest
+import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.StudentsListResponse
 import com.anomali.studentmanagement.data.remote.dto.response.TeacherResponseDTO
-import com.anomali.studentmanagement.data.repository.admin.ClassesRepository
-import com.anomali.studentmanagement.data.repository.admin.ScheduleRepository
+import com.anomali.studentmanagement.data.repository.admin.StudentRepository
 import com.anomali.studentmanagement.data.repository.admin.SubjectRepository
 import com.anomali.studentmanagement.data.repository.admin.TeacherRepository
+import com.anomali.studentmanagement.data.repository.teacher.GradeRepository
 import com.anomali.studentmanagement.ui.components.LabeledInputField
 import com.anomali.studentmanagement.ui.navigations.TopNavigationNoIcon
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateScheduleScreen(
+fun GradeCreateScreen(
     navController: NavController,
-    scheduleRepository: ScheduleRepository,
-    classRepository: ClassesRepository,
+    gradeRepository: GradeRepository,
+    studentRepository: StudentRepository,
     subjectRepository: SubjectRepository,
     teacherRepository: TeacherRepository
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var selectedClass by remember { mutableStateOf<Classes?>(null) }
+    var selectedStudent by remember { mutableStateOf<StudentListResponseDTO?>(null) }
     var selectedSubject by remember { mutableStateOf<Subject?>(null) }
     var selectedTeacher by remember { mutableStateOf<TeacherResponseDTO?>(null) }
 
-    val classList = remember { mutableStateOf(emptyList<Classes>()) }
+    val grade = remember { mutableStateOf("") }
+    val description = remember { mutableStateOf("") }
+
+    val studentList = remember { mutableStateOf(emptyList<StudentListResponseDTO>()) }
     val subjectList = remember { mutableStateOf(emptyList<Subject>()) }
     val teacherList = remember { mutableStateOf(emptyList<TeacherResponseDTO>()) }
 
-    val expandedClass = remember { mutableStateOf(false) }
+    val expandedStudent = remember { mutableStateOf(false) }
     val expandedSubject = remember { mutableStateOf(false) }
     val expandedTeacher = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         try {
-            val classResponse = classRepository.getClasses()
-            if (classResponse.isSuccessful) {
-                classList.value = classResponse.body() ?: emptyList()
+            val studentResponse = studentRepository.getStudents()
+            if (studentResponse.isSuccessful) {
+                studentList.value = studentResponse.body()?.students ?: emptyList()
             }
 
             val subjectResponse = subjectRepository.getSubjects()
@@ -92,16 +92,6 @@ fun CreateScheduleScreen(
             Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-    // State untuk time dan day picker
-    val scheduleDay = remember { mutableStateOf("") }
-    val scheduleStartTime = remember { mutableStateOf("") }
-    val scheduleEndTime = remember { mutableStateOf("") }
-
-    // Day Picker options
-    val daysOfWeek =
-        listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-    val expandedDay = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { TopNavigationNoIcon(navController) },
@@ -125,17 +115,17 @@ fun CreateScheduleScreen(
                 ) {
                     // Class Dropdown
                     ExposedDropdownMenuBox(
-                        expanded = expandedClass.value,
-                        onExpandedChange = { expandedClass.value = it }
+                        expanded = expandedStudent.value,
+                        onExpandedChange = { expandedStudent.value = it }
                     ) {
                         OutlinedTextField(
-                            value = classList.value.find { it.id == selectedClass?.id }?.name
+                            value = studentList.value.find { it.id == selectedStudent?.id }?.user?.name
                                 ?: "Select Class",
                             onValueChange = {},
                             readOnly = true,
                             trailingIcon = {
                                 Icon(
-                                    imageVector = if (expandedClass.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                                    imageVector = if (expandedStudent.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                                     contentDescription = null
                                 )
                             },
@@ -144,15 +134,15 @@ fun CreateScheduleScreen(
                                 .menuAnchor()
                         )
                         ExposedDropdownMenu(
-                            expanded = expandedClass.value,
-                            onDismissRequest = { expandedClass.value = false }
+                            expanded = expandedStudent.value,
+                            onDismissRequest = { expandedStudent.value = false }
                         ) {
-                            classList.value.forEach { classItem ->
+                            studentList.value.forEach { studentItem ->
                                 DropdownMenuItem(
-                                    text = { Text(classItem.name) },
+                                    text = { Text(studentItem.user.name) },
                                     onClick = {
-                                        selectedClass = classItem
-                                        expandedClass.value = false
+                                        selectedStudent = studentItem
+                                        expandedStudent.value = false
                                     }
                                 )
                             }
@@ -231,63 +221,24 @@ fun CreateScheduleScreen(
                         }
                     }
 
-                    // Day Picker (Dropdown)
-                    ExposedDropdownMenuBox(
-                        expanded = expandedDay.value,
-                        onExpandedChange = { expandedDay.value = it }
-                    ) {
-                        OutlinedTextField(
-                            value = scheduleDay.value.ifEmpty { "Select Day" },
-                            onValueChange = {},
-                            readOnly = true,
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = if (expandedDay.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                                    contentDescription = null
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor()
-                        )
-                        ExposedDropdownMenu(
-                            expanded = expandedDay.value,
-                            onDismissRequest = { expandedDay.value = false }
-                        ) {
-                            daysOfWeek.forEach { day ->
-                                DropdownMenuItem(
-                                    text = { Text(day) },
-                                    onClick = {
-                                        scheduleDay.value = day
-                                        expandedDay.value = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-
                     LabeledInputField(
-                        title = "Start Time",
-                        placeholder = "Masukkan waktu mulai",
-                        value = scheduleStartTime.value,
-                        onValueChange = { scheduleStartTime.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        isPasswordTextField = false
+                        title = "Nilai",
+                        placeholder = "Masukkan nilai",
+                        value = grade.value,
+                        onValueChange = { grade.value = it }
                     )
-
                     LabeledInputField(
-                        title = "End Time",
-                        placeholder = "Masukkan waktu selesai",
-                        value = scheduleEndTime.value,
-                        onValueChange = { scheduleEndTime.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        title = "Deskripsi",
+                        placeholder = "Masukkan deskripsi",
+                        value = description.value,
+                        onValueChange = { description.value = it }
                     )
 
                     Button(onClick = {
                         coroutineScope.launch {
-                            val classId = selectedClass?.id ?: return@launch Toast.makeText(
+                            val studentId = selectedStudent?.id ?: return@launch Toast.makeText(
                                 context,
-                                "Pilih kelas terlebih dahulu",
+                                "Pilih siswa terlebih dahulu",
                                 Toast.LENGTH_SHORT
                             ).show()
                             val teacherId = selectedTeacher?.id ?: return@launch Toast.makeText(
@@ -302,27 +253,26 @@ fun CreateScheduleScreen(
                             ).show()
 
                             try {
-                                val schedule = ScheduleRequest(
-                                    classId = classId,
+                                val gradeRequest = GradeRequest(
+                                    studentId = studentId,
                                     teacherId = teacherId,
                                     subjectId = subjectId,
-                                    day = scheduleDay.value,
-                                    startTime = scheduleStartTime.value,
-                                    endTime = scheduleEndTime.value
+                                    score = grade.value.toInt(),
+                                    remark = description.value
                                 )
 
-                                val response = scheduleRepository.createSchedule(schedule)
+                                val response = gradeRepository.createGrade(gradeRequest)
                                 if (response.isSuccessful) {
                                     Toast.makeText(
                                         context,
-                                        "Jadwal berhasil ditambahkan",
+                                        "Nilai berhasil ditambahkan",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     navController.popBackStack()
                                 } else {
                                     Toast.makeText(
                                         context,
-                                        "Gagal menambahkan jadwal",
+                                        "Gagal menambahkan nilai",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }

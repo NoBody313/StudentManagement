@@ -19,7 +19,7 @@ import com.anomali.studentmanagement.R
 import com.anomali.studentmanagement.core.routes.AppRoutes
 
 @Composable
-fun BottomNavigation(navController: NavController, pages: Int = 0) {
+fun TeacherBottomNavigation(navController: NavController, pages: Int = 0) {
     val menuItems = listOf(
         Triple(
             AppRoutes.AdminDashboardScreen,
@@ -27,25 +27,15 @@ fun BottomNavigation(navController: NavController, pages: Int = 0) {
             R.drawable.home_off
         ) to "Dashboard",
         Triple(
-            AppRoutes.ManagementScreen,
-            R.drawable.management_on,
-            R.drawable.management_off
-        ) to "Manajemen",
-        Triple(
             AppRoutes.GradeScreen,
             R.drawable.management_on,
             R.drawable.management_off
         ) to "Penilaian",
         Triple(
-            AppRoutes.FavoriteListScreen,
-            R.drawable.add_on,
-            R.drawable.add_off
-        ) to "Tambah Cepat",
-        Triple(
             AppRoutes.ManagementScheduleScreen,
             R.drawable.calendar_on,
             R.drawable.calendar_off
-        ) to "Jadwal",
+        ) to "Absensi",
         Triple(
             AppRoutes.LogoutScreen,
             R.drawable.settings_on,

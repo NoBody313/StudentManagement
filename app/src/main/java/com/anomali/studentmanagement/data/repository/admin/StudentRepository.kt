@@ -6,7 +6,7 @@ import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.student.Student
 import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
 import com.anomali.studentmanagement.data.remote.dto.response.StudentCreateResponse
-import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponse
+import com.anomali.studentmanagement.data.remote.dto.response.StudentsListResponse
 import com.anomali.studentmanagement.data.remote.network.RetrofitInstance
 import com.google.gson.Gson
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -14,7 +14,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 interface StudentRepository {
-    suspend fun getStudents(): Response<StudentListResponse>
+    suspend fun getStudents(): Response<StudentsListResponse>
     suspend fun getStudentById(id: Int): Response<Student>
     suspend fun createStudent(request: StudentRequest): Response<StudentCreateResponse>
     suspend fun updateStudent(id: Int, request: StudentRequest): Response<StudentCreateResponse>
@@ -30,7 +30,7 @@ class StudentRepositoryImpl @Inject constructor(
 
     private val studentService = RetrofitInstance.getStudentService()
 
-    override suspend fun getStudents(): Response<StudentListResponse> {
+    override suspend fun getStudents(): Response<StudentsListResponse> {
         try {
             val response = studentService.getStudents()
             if (response.isSuccessful) {

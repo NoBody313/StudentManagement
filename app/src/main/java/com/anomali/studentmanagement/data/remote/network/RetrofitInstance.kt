@@ -8,6 +8,7 @@ import com.anomali.studentmanagement.data.remote.api.ScheduleService
 import com.anomali.studentmanagement.data.remote.api.StudentService
 import com.anomali.studentmanagement.data.remote.api.SubjectService
 import com.anomali.studentmanagement.data.remote.api.TeacherService
+import com.anomali.studentmanagement.data.remote.api.teacher.GradeService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -65,5 +66,9 @@ object RetrofitInstance {
 
     fun getScheduleService(): ScheduleService {
         return retrofit.create(ScheduleService::class.java)
+    }
+
+    fun getGradeService(): GradeService {
+        return retrofit.create(GradeService::class.java)
     }
 }

@@ -18,6 +18,7 @@ import com.anomali.studentmanagement.data.repository.admin.ScheduleRepositoryImp
 import com.anomali.studentmanagement.data.repository.admin.StudentRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.SubjectRepositoryImpl
 import com.anomali.studentmanagement.data.repository.admin.TeacherRepositoryImpl
+import com.anomali.studentmanagement.data.repository.teacher.GradeRepositoryImpl
 import com.anomali.studentmanagement.ui.screens.ProfileScreen
 import com.anomali.studentmanagement.ui.screens.admin.DashboardScreen
 import com.anomali.studentmanagement.ui.screens.admin.ManagementScreen
@@ -39,6 +40,9 @@ import com.anomali.studentmanagement.ui.screens.admin.schedule.ScheduleScreen
 import com.anomali.studentmanagement.ui.screens.auth.LoginScreen
 import com.anomali.studentmanagement.ui.screens.auth.RegisterScreen
 import com.anomali.studentmanagement.ui.screens.students.CreateEditStudentScreen
+import com.anomali.studentmanagement.ui.screens.teacher.TeacherDashboardScreen
+import com.anomali.studentmanagement.ui.screens.teacher.grade.GradeCreateScreen
+import com.anomali.studentmanagement.ui.screens.teacher.grade.GradeScreen
 
 //import com.anomali.studentmanagement.ui.screens.students.StudentListScreen
 
@@ -55,12 +59,13 @@ fun AppNavigation() {
     val subjectRepository = SubjectRepositoryImpl(context = context)
     val teacherRepository = TeacherRepositoryImpl(context = context)
     val scheduleRepository = ScheduleRepositoryImpl(context = context)
+    val gradeRepository = GradeRepositoryImpl(context = context)
     val studentDao = StudentDatabase.getDatabase(context).studentDao()
 
 
     NavHost(
         navController,
-        startDestination = if (token.isNotEmpty()) AppRoutes.AdminDashboardScreen.route else AppRoutes.LoginScreen.route
+        startDestination = if (token.isNotEmpty()) AppRoutes.TeacherDashboardScreen.route else AppRoutes.LoginScreen.route
     ) {
         composable(AppRoutes.LoginScreen.route) {
             LoginScreen(
@@ -265,5 +270,35 @@ fun AppNavigation() {
 //        composable(AppRoutes.CreateStudentScreen.route) {
 //            CreateEditStudentScreen(navController, isEdit = false, studentId = null)
 //        }
+
+        // Teacher
+        composable(AppRoutes.TeacherDashboardScreen.route) {
+            TeacherDashboardScreen(
+                navController = navController,
+                authRepository = authRepository,
+                context = context,
+                token = token
+            )
+        }
+
+        composable(AppRoutes.GradeScreen.route) {
+            GradeScreen(
+                navController = navController,
+                studentRepository = studentRepository,
+                subjectRepository = subjectRepository,
+                teacherRepository = teacherRepository,
+                gradeRepository = gradeRepository
+            )
+        }
+
+        composable(AppRoutes.GradeCreateScreen.route) {
+            GradeCreateScreen(
+                navController = navController,
+                studentRepository = studentRepository,
+                subjectRepository = subjectRepository,
+                teacherRepository = teacherRepository,
+                gradeRepository = gradeRepository
+            )
+        }
     }
 }

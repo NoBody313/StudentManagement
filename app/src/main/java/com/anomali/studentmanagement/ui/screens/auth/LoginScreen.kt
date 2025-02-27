@@ -132,7 +132,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .clickable {
-                        navController.navigate(AppRoutes.RegisterScreen.route)
+                        navController.navigate(AppRoutes.TeacherDashboardScreen.route)
                     },
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center

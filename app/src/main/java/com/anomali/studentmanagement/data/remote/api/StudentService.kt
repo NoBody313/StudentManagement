@@ -2,8 +2,8 @@ package com.anomali.studentmanagement.data.remote.api
 
 import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
 import com.anomali.studentmanagement.data.remote.dto.response.StudentCreateResponse
-import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponse
 import com.anomali.studentmanagement.data.remote.dto.response.StudentResponseDTO
+import com.anomali.studentmanagement.data.remote.dto.response.StudentsListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -15,7 +15,7 @@ import retrofit2.http.Path
 interface StudentService {
 
     @GET("api/students")
-    suspend fun getStudents(): Response<StudentListResponse>
+    suspend fun getStudents(): Response<StudentsListResponse>
 
     @GET("api/students/{id}")
     suspend fun getStudentById(@Path("id") id: Int): Response<StudentResponseDTO>

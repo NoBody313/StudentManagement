@@ -66,6 +66,10 @@ data class StudentListResponse(
     @SerializedName("data") val students: List<StudentListResponseDTO>,
 )
 
+data class StudentsListResponse(
+    @SerializedName("data") val students: List<StudentListResponseDTO>,
+)
+
 data class StudentCreateResponse(
     @SerializedName("message") val message: String,
     @SerializedName("user") val user: UserDTO,
