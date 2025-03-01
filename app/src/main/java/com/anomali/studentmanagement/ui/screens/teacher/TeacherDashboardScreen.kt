@@ -114,14 +114,6 @@ fun TeacherDashboardScreen(
                         )
                     )
                 }
-
-                Icon(
-                    painter = painterResource(id = R.drawable.notifications),
-                    contentDescription = "image description",
-                    tint = Color(0xFF1E3A8A),
-                    modifier = Modifier
-                        .size(24.dp)
-                )
             }
         }
 

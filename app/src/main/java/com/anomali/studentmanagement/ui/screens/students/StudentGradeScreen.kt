@@ -55,7 +55,6 @@ fun StudentGradeScreen(navController: NavController, studentAcademicRepository: 
     }
 
     Scaffold(
-        topBar = { TopNavigation(navController) },
         bottomBar = { BottomNavigation(navController) },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     ) { paddingValues ->

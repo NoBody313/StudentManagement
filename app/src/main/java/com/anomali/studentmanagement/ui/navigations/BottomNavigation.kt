@@ -43,14 +43,19 @@ fun BottomNavigation(navController: NavController) {
                 R.drawable.calendar_off
             ) to "Jadwal",
             Triple(
-                AppRoutes.LogoutScreen,
-                R.drawable.settings_on,
-                R.drawable.settings_off
-            ) to "Pengaturan"
+                AppRoutes.ProfileScreen,
+                R.drawable.person,
+                R.drawable.person_on
+            ) to "Profil"
         )
 
         "guru" -> listOf(
             Triple(
+                AppRoutes.TeacherDashboardScreen,
+                R.drawable.home_on,
+                R.drawable.home_off
+            ) to "Dashboard",
+            Triple(
                 AppRoutes.GradeScreen,
                 R.drawable.management_on,
                 R.drawable.management_off
@@ -61,33 +66,38 @@ fun BottomNavigation(navController: NavController) {
                 R.drawable.calendar_off
             ) to "Absen",
             Triple(
-                AppRoutes.LogoutScreen,
-                R.drawable.settings_on,
-                R.drawable.settings_off
-            ) to "Pengaturan"
+                AppRoutes.ProfileScreen,
+                R.drawable.person,
+                R.drawable.person_on
+            ) to "Profil"
         )
 
         "siswa" -> listOf(
             Triple(
-                AppRoutes.ManagementScheduleScreen,
+                AppRoutes.StudentDashboardScreen,
+                R.drawable.home_on,
+                R.drawable.home_off
+            ) to "Dashboard",
+            Triple(
+                AppRoutes.StudentScheduleScreen,
                 R.drawable.calendar_on,
                 R.drawable.calendar_off
             ) to "Jadwal",
             Triple(
-                AppRoutes.GradeScreen,
+                AppRoutes.StudentGradeScreen,
                 R.drawable.management_on,
                 R.drawable.management_off
             ) to "Penilaian",
             Triple(
-                AppRoutes.AttendanceScreen,
+                AppRoutes.StudentAttendanceScreen,
                 R.drawable.calendar_on,
                 R.drawable.calendar_off
             ) to "Absen",
             Triple(
-                AppRoutes.LogoutScreen,
-                R.drawable.settings_on,
-                R.drawable.settings_off
-            ) to "Pengaturan"
+                AppRoutes.ProfileScreen,
+                R.drawable.person,
+                R.drawable.person_on
+            ) to "Profil"
         )
 
         else -> emptyList()

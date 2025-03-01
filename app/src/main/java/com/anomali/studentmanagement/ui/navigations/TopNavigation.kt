@@ -146,16 +146,6 @@ fun TopNavigation(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.search),
-                contentDescription = "image description",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable {
-                        onSearchClicked(currentRoute)
-                    }
-            )
-            Icon(
                 painter = painterResource(id = R.drawable.add),
                 contentDescription = "image description",
                 tint = Color.White,

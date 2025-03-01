@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import com.anomali.studentmanagement.data.remote.dto.response.student.AttendanceDataResponseDTO
 import com.anomali.studentmanagement.data.repository.student.StudentAcademicRepository
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
-import com.anomali.studentmanagement.ui.navigations.TopNavigation
 
 @Composable
 fun StudentAttendanceScreen(navController: NavController, studentAcademicRepository: StudentAcademicRepository) {
@@ -56,7 +55,6 @@ fun StudentAttendanceScreen(navController: NavController, studentAcademicReposit
     }
 
     Scaffold(
-        topBar = { TopNavigation(navController) },
         bottomBar = { BottomNavigation(navController) },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     ) { paddingValues ->

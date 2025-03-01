@@ -8,14 +8,14 @@ import com.google.gson.annotations.SerializedName
 data class ScheduleDataResponseDTO(
     @SerializedName("id") val id: Int,
     @SerializedName("class_id") val classId: Int,
-    @SerializedName("classes") val classes: ClassesDTO,
     @SerializedName("teacher_id") val teacherId: Int,
-    @SerializedName("teacher") val teacher: TeacherResponseDTO,
     @SerializedName("subject_id") val subjectId: Int,
-    @SerializedName("subject") val subject: SubjectDTO,
     @SerializedName("day") val day: String,
     @SerializedName("start_time") val startTime: String,
     @SerializedName("end_time") val endTime: String,
+    @SerializedName("classes") val classes: ClassesDTO,
+    @SerializedName("teacher") val teacher: TeacherResponseDTO,
+    @SerializedName("subject") val subject: SubjectDTO,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String
 )

@@ -119,93 +119,11 @@ fun DashboardScreen(
                         )
                     )
                 }
-
-                Icon(
-                    painter = painterResource(id = R.drawable.notifications),
-                    contentDescription = "image description",
-                    tint = Color(0xFF1E3A8A),
-                    modifier = Modifier
-                        .size(24.dp)
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Text(
-                    text = "Statistik Data Sekolah",
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color(0xFF1E3A8A),
-                    )
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    // Example of the existing statistic cards
-                    StatisticCard("3102", "Jumlah Siswa", Color(0xFFBBF7D0), Color(0xFF14532D))
-                    StatisticCard("300", "Jumlah Guru", Color(0xFFFEF08A), Color(0xFF713F12))
-                    StatisticCard("200", "Jumlah Kelas", Color(0xFFC7D2FE), Color(0xFF312E81))
-                }
-
-                // Crash Button
-                Button(
-                    onClick = {
-                        // Trigger the crash
-                        FirebaseCrashlytics.getInstance().log("Test Crash Button clicked")
-                        throw RuntimeException("Test Crash") // Force a crash
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 32.dp)
-                ) {
-                    Text(text = "Test Crash")
-                }
             }
         }
     }
 
     if (errorMessage.isNotEmpty()) {
         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-    }
-}
-
-@Composable
-fun StatisticCard(value: String, label: String, backgroundColor: Color, textColor: Color) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(100.dp)
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(size = 4.dp)
-            )
-            .padding(top = 16.dp, bottom = 16.dp)
-    ) {
-        Text(
-            text = value,
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight(600),
-                color = textColor,
-                textAlign = TextAlign.Center,
-            )
-        )
-
-        Text(
-            text = label,
-            style = TextStyle(
-                fontSize = 12.sp,
-                fontWeight = FontWeight(500),
-                color = textColor,
-                textAlign = TextAlign.Center,
-            )
-        )
     }
 }

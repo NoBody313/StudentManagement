@@ -11,10 +11,13 @@
       <SelectionState runConfigName="BottomNavigationTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testNavigationMenuForGuruRole()">
+      <SelectionState runConfigName="testMenuDisplayedForGuruRole()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testMenuDisplayedForGuruRole()">
+      <SelectionState runConfigName="loginTest()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="LoginScreenScenarioTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

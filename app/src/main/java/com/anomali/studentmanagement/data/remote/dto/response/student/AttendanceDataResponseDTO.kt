@@ -14,6 +14,7 @@ data class AttendanceDataResponseDTO(
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String
 )
- data class AttendanceDataListResponseDTO(
-     @SerializedName("attendances") val attendances: List<AttendanceDataResponseDTO>
- )
+
+data class AttendanceDataListResponseDTO(
+    @SerializedName("attendances") val attendances: List<AttendanceDataResponseDTO>
+)

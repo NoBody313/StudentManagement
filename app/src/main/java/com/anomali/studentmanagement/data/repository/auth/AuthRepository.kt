@@ -100,6 +100,5 @@ class AuthRepositoryImpl(
         }
     }
 
-
     class UnauthorizedException : Exception("Token expired or unauthorized access")
 }

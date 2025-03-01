@@ -1,5 +1,6 @@
 package com.anomali.studentmanagement.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,19 +11,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.anomali.studentmanagement.core.routes.AppRoutes
+import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.data.model.User
 import com.anomali.studentmanagement.data.repository.auth.AuthRepository
+import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
 import kotlinx.coroutines.launch
 
@@ -34,6 +41,34 @@ fun ProfileScreen(
     onLoggedOut: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val userState = remember { mutableStateOf<User?>(null) }
+    var errorMessage by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val handleTokenExpired: () -> Unit = {
+        PreferencesUtils.clearTokenFromPreferences(context)
+        Toast.makeText(context, "Session expired. Redirecting to Login...", Toast.LENGTH_SHORT)
+            .show()
+        navController.navigate(AppRoutes.LoginScreen.route) {
+            popUpTo(AppRoutes.AdminDashboardScreen.route) { inclusive = true }
+        }
+    }
+
+    LaunchedEffect(token) {
+        try {
+            val user = authRepository.getUserData(token)
+            if (user != null) {
+                println("User data received: ${user.name}")
+                userState.value = user
+            } else {
+                handleTokenExpired()
+            }
+        } catch (e: Exception) {
+            errorMessage = "Error fetching user data: ${e.localizedMessage}"
+            if (e is AuthRepositoryImpl.UnauthorizedException) {
+                handleTokenExpired()
+            }
+        }
+    }
 
     Scaffold(
         bottomBar = { BottomNavigation(navController) }

@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,8 +41,8 @@ fun StudentDashboardScreen(
     navController: NavController,
     authRepository: AuthRepository,
     token: String,
-    context: Context
 ) {
+    val context = LocalContext.current
     val userState = remember { mutableStateOf<User?>(null) }
     var errorMessage by remember { mutableStateOf("") }
     val handleTokenExpired: () -> Unit = {
@@ -114,14 +115,6 @@ fun StudentDashboardScreen(
                         )
                     )
                 }
-
-                Icon(
-                    painter = painterResource(id = R.drawable.notifications),
-                    contentDescription = "image description",
-                    tint = Color(0xFF1E3A8A),
-                    modifier = Modifier
-                        .size(24.dp)
-                )
             }
         }
 

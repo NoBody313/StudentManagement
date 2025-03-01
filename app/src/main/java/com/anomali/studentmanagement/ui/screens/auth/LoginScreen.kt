@@ -134,18 +134,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
             ) {
                 Text(text = "Login")
             }
-
-            Text(
-                text = "Testing Ke Regis",
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .clickable {
-                        navController.navigate(AppRoutes.AdminDashboardScreen.route)
-                    },
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center
-            )
-
         }
     }
 }

@@ -4,17 +4,7 @@ sealed class AppRoutes(val route: String) {
     object LoginScreen : AppRoutes("login")
     object RegisterScreen : AppRoutes("register")
     object LogoutScreen : AppRoutes("logout")
-//    object DashboardScreen : AppRoutes("dashboard")
-    object StudentListScreen : AppRoutes("students")
     object ProfileScreen : AppRoutes("profile")
-    object StudentDetailScreen : AppRoutes("student/{studentId}") {
-        fun createRoute(studentId: String) = "student/$studentId"
-    }
-
-//    object CreateStudentScreen : AppRoutes("create_student")
-    object EditStudentScreen : AppRoutes("edit_student/{studentId}/{isEdit}") {
-        fun createRoute(studentId: String, isEdit: Boolean) = "edit_student/$studentId/$isEdit"
-    }
 
     object FavoriteListScreen : AppRoutes("favorite")
 
@@ -48,10 +38,8 @@ sealed class AppRoutes(val route: String) {
     object DetailScheduleScreen : AppRoutes("admin/management/schedule/detail/{scheduleId}") {
         fun scheduleCreateRoute(scheduleId: Int) = "admin/management/schedule/detail/$scheduleId"
     }
-
     // Teacher
     object TeacherDashboardScreen : AppRoutes("teacher/dashboard")
-    object TeacherProfileScreen : AppRoutes("teacher/profile")
     object GradeScreen : AppRoutes("teacher/grade")
     object GradeCreateScreen : AppRoutes("teacher/grade/create")
     object AttendanceScreen : AppRoutes("teacher/attendance")
@@ -59,9 +47,7 @@ sealed class AppRoutes(val route: String) {
 
     // Student
     object StudentDashboardScreen : AppRoutes("student/dashboard")
-
-    // Announcement
-    object AnnouncementScreen : AppRoutes("announcement")
-    object AnnouncementCreateScreen : AppRoutes("announcement/create")
-    object AnnouncementDetailScreen : AppRoutes("announcement/detail/{announcementId}")
+    object StudentGradeScreen : AppRoutes("student/grade")
+    object StudentScheduleScreen : AppRoutes("student/schedule")
+    object StudentAttendanceScreen : AppRoutes("student/attendance")
 }

@@ -59,7 +59,6 @@ fun StudentScheduleScreen(navController: NavController, studentAcademicRepositor
     }
 
     Scaffold(
-        topBar = { TopNavigation(navController) },
         bottomBar = { BottomNavigation(navController) },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     ) { paddingValues ->
