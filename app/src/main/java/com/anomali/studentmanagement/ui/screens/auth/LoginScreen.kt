@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.core.routes.AppRoutes
 import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
     var email by remember { mutableStateOf("") }
@@ -46,6 +44,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val authRepository = AuthRepositoryImpl(
         context = context
@@ -104,10 +103,10 @@ fun LoginScreen(onLoginSuccess: () -> Unit, navController: NavController) {
                         isLoading = true
                         errorMessage = null
 
-                        GlobalScope.launch {
+                        coroutineScope.launch {
                             try {
                                 val loginResponse = authRepository.login(email, password)
-                                val user = authRepository.getUserData(loginResponse.token)
+                                val user = authRepository.getUserData(token = loginResponse.token)
                                 withContext(Dispatchers.Main) {
                                     isLoading = false
                                     Log.d("LoginScreen", "JWT Token: ${loginResponse.token}")

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +38,7 @@ import com.anomali.studentmanagement.data.model.User
 import com.anomali.studentmanagement.data.repository.auth.AuthRepository
 import com.anomali.studentmanagement.data.repository.auth.AuthRepositoryImpl
 import com.anomali.studentmanagement.ui.navigations.BottomNavigation
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 @Composable
 fun DashboardScreen(
@@ -145,116 +147,65 @@ fun DashboardScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(
-                            6.dp,
-                            Alignment.CenterVertically
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .width(100.dp)
-                            .background(
-                                color = Color(0xFFBBF7D0),
-                                shape = RoundedCornerShape(size = 4.dp)
-                            )
-                            .padding(top = 16.dp, bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = "3102",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight(600),
-                                color = Color(0xFF14532D),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
+                    // Example of the existing statistic cards
+                    StatisticCard("3102", "Jumlah Siswa", Color(0xFFBBF7D0), Color(0xFF14532D))
+                    StatisticCard("300", "Jumlah Guru", Color(0xFFFEF08A), Color(0xFF713F12))
+                    StatisticCard("200", "Jumlah Kelas", Color(0xFFC7D2FE), Color(0xFF312E81))
+                }
 
-                        Text(
-                            text = "Jumlah Siswa",
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight(500),
-                                color = Color(0xFF14532D),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-                    }
-
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(
-                            6.dp,
-                            Alignment.CenterVertically
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .width(100.dp)
-                            .background(
-                                color = Color(0xFFFEF08A),
-                                shape = RoundedCornerShape(size = 4.dp)
-                            )
-                            .padding(top = 16.dp, bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = "300",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight(600),
-                                color = Color(0xFF713F12),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-
-                        Text(
-                            text = "Jumlah Guru",
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight(500),
-                                color = Color(0xFF713F12),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-                    }
-
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(
-                            6.dp,
-                            Alignment.CenterVertically
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .width(100.dp)
-                            .background(
-                                color = Color(0xFFC7D2FE),
-                                shape = RoundedCornerShape(size = 4.dp)
-                            )
-                            .padding(top = 16.dp, bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = "200",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight(600),
-                                color = Color(0xFF312E81),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-
-                        Text(
-                            text = "Jumlah Kelas",
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight(500),
-                                color = Color(0xFF312E81),
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-                    }
+                // Crash Button
+                Button(
+                    onClick = {
+                        // Trigger the crash
+                        FirebaseCrashlytics.getInstance().log("Test Crash Button clicked")
+                        throw RuntimeException("Test Crash") // Force a crash
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp)
+                ) {
+                    Text(text = "Test Crash")
                 }
             }
         }
-
     }
+
     if (errorMessage.isNotEmpty()) {
         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+}
+
+@Composable
+fun StatisticCard(value: String, label: String, backgroundColor: Color, textColor: Color) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .width(100.dp)
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(size = 4.dp)
+            )
+            .padding(top = 16.dp, bottom = 16.dp)
+    ) {
+        Text(
+            text = value,
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight(600),
+                color = textColor,
+                textAlign = TextAlign.Center,
+            )
+        )
+
+        Text(
+            text = label,
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight(500),
+                color = textColor,
+                textAlign = TextAlign.Center,
+            )
+        )
     }
 }

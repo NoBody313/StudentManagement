@@ -2,7 +2,9 @@ package com.anomali.studentmanagement.data.repository.admin
 
 import android.content.Context
 import android.util.Log
+import com.anomali.studentmanagement.data.local.dao.StudentDao
 import com.anomali.studentmanagement.data.mapper.toModel
+import com.anomali.studentmanagement.data.mapper.toStudentEntity
 import com.anomali.studentmanagement.data.model.student.Student
 import com.anomali.studentmanagement.data.remote.dto.request.StudentRequest
 import com.anomali.studentmanagement.data.remote.dto.response.StudentCreateResponse
@@ -19,10 +21,12 @@ interface StudentRepository {
     suspend fun createStudent(request: StudentRequest): Response<StudentCreateResponse>
     suspend fun updateStudent(id: Int, request: StudentRequest): Response<StudentCreateResponse>
     suspend fun deleteStudent(id: Int): Response<Unit>
+    suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean)
 }
 
 class StudentRepositoryImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val studentDao: StudentDao
 ) : StudentRepository {
     init {
         RetrofitInstance.initRetrofit(context)
@@ -35,7 +39,9 @@ class StudentRepositoryImpl @Inject constructor(
             val response = studentService.getStudents()
             if (response.isSuccessful) {
                 val subjects = response.body()
-                Log.d("DEBUG", "Subjects: $subjects")
+                subjects?.students?.forEach {
+                    studentDao.insertStudent(it.toStudentEntity())
+                }
                 return Response.success(subjects)
             } else {
                 throw Exception("Error: ${response.code()} ${response.message()}")
@@ -81,4 +87,10 @@ class StudentRepositoryImpl @Inject constructor(
     override suspend fun deleteStudent(id: Int): Response<Unit> {
         return studentService.deleteStudent(id)
     }
+
+    override suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean) {
+        Log.d("StudentRepository", "Updating student $id favorite status to $isFavorite")
+        studentDao.updateFavoriteStatus(id, isFavorite) // Memanggil DAO langsung
+    }
+
 }

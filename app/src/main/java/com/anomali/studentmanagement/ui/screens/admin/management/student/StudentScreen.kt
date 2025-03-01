@@ -12,7 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,20 +41,37 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.anomali.studentmanagement.R
 import com.anomali.studentmanagement.core.routes.AppRoutes
+import com.anomali.studentmanagement.data.local.dao.StudentDao
+import com.anomali.studentmanagement.data.local.entity.StudentEntity
+import com.anomali.studentmanagement.data.mapper.toStudentEntity
 import com.anomali.studentmanagement.data.remote.dto.response.StudentListResponseDTO
 import com.anomali.studentmanagement.data.repository.admin.StudentRepository
 import com.anomali.studentmanagement.ui.components.EditButton
 import com.anomali.studentmanagement.ui.navigations.TopNavigation
+import kotlinx.coroutines.launch
 
 @Composable
-fun StudentScreen(navController: NavController, studentRepository: StudentRepository) {
+fun StudentScreen(
+    navController: NavController,
+    studentRepository: StudentRepository,
+    studentDao: StudentDao
+) {
     var students by remember { mutableStateOf<List<StudentListResponseDTO>>(emptyList()) }
+    var favoriteStudents by remember { mutableStateOf<List<StudentEntity>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    // Mendapatkan CoroutineScope
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         isLoading = true
         try {
+            val currentFavoriteStudents = studentDao.getAllStudents().filter {
+                it.isFavorite
+            }
+            favoriteStudents = currentFavoriteStudents
+
             val response = studentRepository.getStudents()
             if (response.isSuccessful) {
                 students = response.body()?.students ?: emptyList()
@@ -80,19 +104,39 @@ fun StudentScreen(navController: NavController, studentRepository: StudentReposi
                     contentPadding = PaddingValues(vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    items(students.size) { student ->
-                        Log.d("DEBUG", "Student: ${student}, Class: ${students[student]}")
-                        StudentItem(student = students[student], navController = navController)
+                    items(students.size) { studentIndex ->
+                        val student = students[studentIndex]
+                        val isFavorite = favoriteStudents.any { it.id == student.id }
+
+                        StudentItem(
+                            student = student,
+                            isFavorite = isFavorite,
+                            onFavoriteClick = {
+                                coroutineScope.launch {
+                                    val updatedStudentEntity = student.toStudentEntity()
+                                    updatedStudentEntity.isFavorite = !isFavorite
+                                    studentRepository.updateFavoriteStatus(updatedStudentEntity.id, !isFavorite)
+                                    favoriteStudents = studentDao.getAllStudents().filter {
+                                        it.isFavorite
+                                    }
+                                }
+                            },
+                            navController = navController
+                        )
                     }
                 }
             }
-
         }
     }
 }
 
 @Composable
-fun StudentItem(student: StudentListResponseDTO, navController: NavController) {
+fun StudentItem(
+    student: StudentListResponseDTO,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
+    navController: NavController
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -147,6 +191,14 @@ fun StudentItem(student: StudentListResponseDTO, navController: NavController) {
                 }
             }
         }
+
+        IconButton(onClick = onFavoriteClick) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Outlined.Favorite else Icons.Filled.Favorite,
+                contentDescription = "Favorite"
+            )
+        }
+
         EditButton(onClick = {
             navController.navigate(
                 AppRoutes.DetailStudentScreen.studentCreateRoute(student.id)

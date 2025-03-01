@@ -104,8 +104,8 @@ fun DetailStudentScreen(
                     studentName = it.user.name
                     studentNIS = it.nis
                     studentNISN = it.nisn
-                    studentDateOfBirth.value = it.date_of_birth
-                    studentPlaceOfBirth = it.place_of_birth
+                    studentDateOfBirth.value = it.dateOfBirth
+                    studentPlaceOfBirth = it.placeOfBirth
                     studentGender = it.gender
 //                    studentFatherName = it.father.name
 //                    studentFatherPhoneNumber = it.father.phoneNumber
@@ -121,7 +121,7 @@ fun DetailStudentScreen(
 //                    studentMotherAddress = it.mother.address
                     email = it.user.email
                 }
-                selectedClass.value = student?.class_id?.id
+                selectedClass.value = student?.classId?.id
             } else {
                 Log.e("StudentData", "Error: ${studentResponse.message()}")
                 Toast.makeText(context, "Error: ${studentResponse.message()}", Toast.LENGTH_SHORT)

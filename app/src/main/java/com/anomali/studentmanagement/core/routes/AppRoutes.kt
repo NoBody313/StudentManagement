@@ -59,4 +59,9 @@ sealed class AppRoutes(val route: String) {
 
     // Student
     object StudentDashboardScreen : AppRoutes("student/dashboard")
+
+    // Announcement
+    object AnnouncementScreen : AppRoutes("announcement")
+    object AnnouncementCreateScreen : AppRoutes("announcement/create")
+    object AnnouncementDetailScreen : AppRoutes("announcement/detail/{announcementId}")
 }

@@ -4,17 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.anomali.studentmanagement.core.utils.Converters
 import com.anomali.studentmanagement.data.local.dao.StudentDao
-import com.anomali.studentmanagement.data.local.entity.FatherEntity
-import com.anomali.studentmanagement.data.local.entity.MotherEntity
 import com.anomali.studentmanagement.data.local.entity.StudentEntity
 
 @Database(
-    entities = [StudentEntity::class, FatherEntity::class, MotherEntity::class],
+    entities = [StudentEntity::class],
     version = 1,
     exportSchema = false
 )
 
+@TypeConverters(Converters::class)
 abstract class StudentDatabase : RoomDatabase() {
     abstract fun studentDao(): StudentDao
 

@@ -33,6 +33,11 @@ fun BottomNavigation(navController: NavController) {
                 R.drawable.management_off
             ) to "Manajemen",
             Triple(
+                AppRoutes.FavoriteListScreen,
+                R.drawable.settings_on,
+                R.drawable.settings_off
+            ) to "Favorite",
+            Triple(
                 AppRoutes.ManagementScheduleScreen,
                 R.drawable.calendar_on,
                 R.drawable.calendar_off

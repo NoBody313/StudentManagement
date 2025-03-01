@@ -1,7 +1,6 @@
 package com.anomali.studentmanagement.data.repository.auth
 
 import android.content.Context
-import android.util.Log
 import com.anomali.studentmanagement.core.utils.PreferencesUtils
 import com.anomali.studentmanagement.data.mapper.toModel
 import com.anomali.studentmanagement.data.model.User
@@ -91,7 +90,6 @@ class AuthRepositoryImpl(
         withContext(Dispatchers.IO) {
             try {
                 PreferencesUtils.clearTokenFromPreferences(context)
-
                 val response = authService.logout("Bearer $token")
                 if (!response.isSuccessful) {
                     throw Exception("Logout gagal: ${response.code()} - ${response.message()}")
